@@ -177,7 +177,7 @@ end)
 
 --
 
-local repo = 'https://fffff.kiilllll1000x00.repl.co/'
+local repo = 'https://raw.githubusercontent.com/i8zHub/i8zHub/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -195,7 +195,7 @@ local Window = Library:CreateWindow({
     -- Position and Size are also valid options here
     -- but you do not need to define them unless you are changing them :)
 
-    Title = 'i8z Hub - ' .. GameName,
+    Title = 'Ora Hub - ' .. GameName,
     Center = false,
     AutoShow = true,
     Size = UDim2.new(0.35, 0, 0.678, 0),
