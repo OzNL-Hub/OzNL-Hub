@@ -314,18 +314,7 @@ local function FireButton(x)
     end
 end
 
-StandsSniper:AddToggle('SniperingStand', {
-    Text = 'Auto Sniper (You Need Rokaka And Arrow)',
-    Default = false, -- Default value (true / false)
-    Tooltip = 'Auto Reroll Stand Until You Get Your Fav Stand ! (((Select Stand From The Up Dropdown)))', -- Information shown when you hover over the toggle
-})
-
-Toggles.SniperingStand:OnChanged(function()
-    _G.AutoSniper = Toggles.SniperingStand.Value
-end)
-
-spawn(function()
-    
+function AutoSnipe()
     while _G.AutoSniper == true do wait()
 
         --
@@ -358,6 +347,17 @@ spawn(function()
             end
         end
     end
+end
+
+StandsSniper:AddToggle('SniperingStand', {
+    Text = 'Auto Sniper (You Need Rokaka And Arrow)',
+    Default = false, -- Default value (true / false)
+    Tooltip = 'Auto Reroll Stand Until You Get Your Fav Stand ! (((Select Stand From The Up Dropdown)))', -- Information shown when you hover over the toggle
+})
+
+Toggles.SniperingStand:OnChanged(function()
+    _G.AutoSniper = Toggles.SniperingStand.Value
+    AutoSnipe()
 end)
 
 _G.AutoWint = false
