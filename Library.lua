@@ -294,153 +294,153 @@ end
 
 -- Stands Tab
 
--- _G.SniperStand = {}
+_G.SniperStand = {}
 
--- StandsSniper:AddDropdown('MyStands', {
---     Values = {"Whitesnake","Stone Free","Star Platinum","The World","Anubis","Red Hot Chili Pepper","Crazy Diamond","Killer Queen","Gold Experience","King Crimson","Silver Chariot","Hermit Purple"},
---     Default = 1, -- number index of the value / string
---     Multi = true, -- true / false, allows multiple choices to be selected
+StandsSniper:AddDropdown('MyStands', {
+    Values = {"Whitesnake","Stone Free","Star Platinum","The World","Anubis","Red Hot Chili Pepper","Crazy Diamond","Killer Queen","Gold Experience","King Crimson","Silver Chariot","Hermit Purple"},
+    Default = 1, -- number index of the value / string
+    Multi = true, -- true / false, allows multiple choices to be selected
 
---     Text = 'Stands Dropdown',
---     Tooltip = 'Select a stand', -- Information shown when you hover over the textbox
--- })
+    Text = 'Stands Dropdown',
+    Tooltip = 'Select a stand', -- Information shown when you hover over the textbox
+})
 
--- Options.MyStands:OnChanged(function()
---     _G.SniperStand = Options.MyStands.Value
--- end)
+Options.MyStands:OnChanged(function()
+    _G.SniperStand = Options.MyStands.Value
+end)
 
--- Options.MyStands:SetValue({
---     Whitesnake = true,
---     Anubis = true
--- })
+Options.MyStands:SetValue({
+    Whitesnake = true,
+    Anubis = true
+})
 
--- _G.AutoSniper = false
+_G.AutoSniper = false
 
--- function Auto_Sniper()
---     while _G.AutoSniper == true do wait()
+function Auto_Sniper()
+    while _G.AutoSniper == true do wait()
         
---         local function CheckEquip()
+        local function CheckEquip()
             
---             if player.Backpack:FindFirstChild("Mysterious Arrow") and player.Backpack:FindFirstChild("Rokakaka") then
+            if player.Backpack:FindFirstChild("Mysterious Arrow") and player.Backpack:FindFirstChild("Rokakaka") then
                 
---                 return true
---             else
---                 return false
---             end
---         end
+                return true
+            else
+                return false
+            end
+        end
 
---         local function EquipArrow()
---             local AlreadyHave = CheckEquip()
+        local function EquipArrow()
+            local AlreadyHave = CheckEquip()
 
---             repeat
---                 wait()
---             until AlreadyHave == true
+            repeat
+                wait()
+            until AlreadyHave == true
 
---             local item1 = player.Backpack:FindFirstChild("Mysterious Arrow")
---             local item2 = player.Backpack:FindFirstChild("Rokakaka")
+            local item1 = player.Backpack:FindFirstChild("Mysterious Arrow")
+            local item2 = player.Backpack:FindFirstChild("Rokakaka")
 
---             humanoid:EquipTool(item1)
+            humanoid:EquipTool(item1)
 
---             mousemoverel(1219, 599)
---         end
+            mousemoverel(1219, 599)
+        end
 
---         local function EquipRokaka()
---             local AlreadyHave = CheckEquip()
+        local function EquipRokaka()
+            local AlreadyHave = CheckEquip()
 
---             repeat
---                 wait()
---             until AlreadyHave == true
+            repeat
+                wait()
+            until AlreadyHave == true
 
---             local item1 = player.Backpack:FindFirstChild("Mysterious Arrow")
---             local item2 = player.Backpack:FindFirstChild("Rokakaka")
+            local item1 = player.Backpack:FindFirstChild("Mysterious Arrow")
+            local item2 = player.Backpack:FindFirstChild("Rokakaka")
 
---             humanoid:EquipTool(item2)
+            humanoid:EquipTool(item2)
 
---             mousemoverel(1219, 599)
---         end
+            mousemoverel(1219, 599)
+        end
 
---         repeat
---             wait()
+        repeat
+            wait()
 
---             if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
+            if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
 
---                 if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
+                if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
 
---                     -- AddStat Method
+                    -- AddStat Method
     
---                     if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
+                    if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
     
---                         local args = {
---                             [1] = "LearnSkill",
---                             [2] = {
---                                 ["Skill"] = "Worthiness I",
---                                 ["SkillTreeType"] = "Character"
---                             }
---                         }
+                        local args = {
+                            [1] = "LearnSkill",
+                            [2] = {
+                                ["Skill"] = "Worthiness I",
+                                ["SkillTreeType"] = "Character"
+                            }
+                        }
                         
---                         game:GetService("Players").LocalPlayer.Character.RemoteFunction:InvokeServer(unpack(args))
+                        game:GetService("Players").LocalPlayer.Character.RemoteFunction:InvokeServer(unpack(args))
 
---                         humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
     
---                         mousemoverel(1219, 599)
+                        mousemoverel(1219, 599)
 
---                         EquipArrow()
+                        EquipArrow()
 
---                         wait(1)
+                        wait(1)
     
---                         mouse1click()
+                        mouse1click()
             
---                         mouse1click()
+                        mouse1click()
                         
---                     else
+                    else
 
---                         humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
     
---                         mousemoverel(1219, 599)
+                        mousemoverel(1219, 599)
 
---                         EquipArrow()
+                        EquipArrow()
 
---                         wait(1)
+                        wait(1)
     
---                         mouse1click()
+                        mouse1click()
             
---                         mouse1click()
---                     end
---                 end
+                        mouse1click()
+                    end
+                end
         
---                 if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
+                if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
 
---                     humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                     
---                     EquipRokaka()
+                    EquipRokaka()
 
---                     wait(1)
+                    wait(1)
     
---                     mousemoverel(1219, 599)
+                    mousemoverel(1219, 599)
         
---                     mouse1click()
+                    mouse1click()
         
---                     mouse1click()
---                 end
---             end
+                    mouse1click()
+                end
+            end
 
---         until _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value]
+        until _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value]
 
---         Library:Notify("Stand Found We Will Take A Break !!")
---         break
---     end
--- end
+        Library:Notify("Stand Found We Will Take A Break !!")
+        break
+    end
+end
 
--- StandsSniper:AddToggle('SniperingStand', {
---     Text = 'Auto Sniper (You Need Rokaka And Arrow)',
---     Default = false, -- Default value (true / false)
---     Tooltip = 'Auto Reroll Stand Until You Get Your Fav Stand ! (((Select Stand From The Up Dropdown)))', -- Information shown when you hover over the toggle
--- })
+StandsSniper:AddToggle('SniperingStand', {
+    Text = 'Auto Sniper (You Need Rokaka And Arrow)',
+    Default = false, -- Default value (true / false)
+    Tooltip = 'Auto Reroll Stand Until You Get Your Fav Stand ! (((Select Stand From The Up Dropdown)))', -- Information shown when you hover over the toggle
+})
 
--- Toggles.SniperingStand:OnChanged(function()
---     _G.AutoSniper = Toggles.SniperingStand.Value
---     Auto_Sniper()
--- end)
+Toggles.SniperingStand:OnChanged(function()
+    _G.AutoSniper = Toggles.SniperingStand.Value
+    Auto_Sniper()
+end)
 
 _G.AutoWint = false
 
@@ -618,13 +618,15 @@ function AutoFarmMobs()
 
             if (HumanoidRootPart.Position - part.Position).Magnitude < 10 then
 
-                HumanoidRootPart.CFrame = part.CFrame * CFrame.new(0, 0, 3)
+                HumanoidRootPart.CFrame = part.CFrame * CFrame.new(0, 0, 8)
 
                 if _G.IsUsingStand == false then
 
                     local remoteEvent = character:FindFirstChild("RemoteEvent")
 
                     if remoteEvent then
+                        HumanoidRootPart.CFrame = part.CFrame * CFrame.new(0, 0, 3)
+
                         local args = {
                             [1] = "Attack",
                             [2] = "m1"
@@ -653,7 +655,8 @@ function AutoFarmMobs()
 
                     -- fight
 
-
+                    HumanoidRootPart.CFrame = part.CFrame * CFrame.new(0, 0, 3)
+                    
                     local args = {
                         [1] = "Attack",
                         [2] = "m1"
