@@ -319,32 +319,37 @@ function AutoSnipe()
 
         --
 
-        if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
+        if game.Players.LocalPlayer.Character.Humanoid.Health > 1 then
+            
+            if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
 
-            Library:Notify("Stand Found We Will Take A Break !!")
-            break
-        
-
-        elseif not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
-
-            if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
-
-                game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Mysterious Arrow"))
-
-                local gui = game.Players.LocalPlayer.PlayerGui:WaitForChild("DialogueGui")
-                local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
-
-                FireButton(yesButton)
+                Library:Notify("Stand Found We Will Take A Break !!")
+                break
+            
     
-            elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
-
-                game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Rokakaka"))
-
-                local gui = game.Players.LocalPlayer.PlayerGui:WaitForChild("DialogueGui")
-                local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
-
-                FireButton(yesButton)
+            elseif not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
+    
+                if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
+    
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Mysterious Arrow"))
+    
+                    local gui = game.Players.LocalPlayer.PlayerGui:WaitForChild("DialogueGui")
+                    local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+    
+                    FireButton(yesButton)
+        
+                elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
+    
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Rokakaka"))
+    
+                    local gui = game.Players.LocalPlayer.PlayerGui:WaitForChild("DialogueGui")
+                    local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+    
+                    FireButton(yesButton)
+                end
             end
+        else
+            wait()
         end
     end
 end
