@@ -29,7 +29,7 @@ local TeamCheck = false;
 
 --
 
-local repo = 'https://fffff.kiilllll1000x00.repl.co/'
+local repo = 'https://raw.githubusercontent.com/i8zHub/i8zHub/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
