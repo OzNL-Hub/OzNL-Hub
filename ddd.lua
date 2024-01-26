@@ -336,6 +336,7 @@ function StandFunction()
         if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
 
             Library:Notify("Stand Found We Will Take A Break !!")
+            _G.AutoSniper = false
         end
 
         if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
@@ -386,11 +387,7 @@ end
 function Auto_Sniper()
     while _G.AutoSniper == true do wait()
 
-        if humanoid.Health > 1 then
-            StandFunction()
-        else
-            Library:Notify("Player is dead...")
-        end
+        StandFunction()
     end
 end
 
