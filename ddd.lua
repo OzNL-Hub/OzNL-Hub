@@ -319,7 +319,8 @@ function AutoSnipe()
 
         --
 
-        if game.Players.LocalPlayer.Character.Humanoid.Health > 1 then
+        local isAlive = IsAlive(game.Players.LocalPlayer)
+        if isAlive then
             
             if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
 
@@ -348,8 +349,6 @@ function AutoSnipe()
                     FireButton(yesButton)
                 end
             end
-        else
-            wait()
         end
     end
 end
