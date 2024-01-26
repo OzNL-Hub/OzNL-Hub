@@ -314,9 +314,9 @@ local function FireButton(x)
     end
 end
 
-function StandFunction()
-    if _G.AutoSniper == true then
-        
+function Auto_Sniper()
+    while _G.AutoSniper == true do wait()
+
         local function EquipArrow()
 
             local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
@@ -336,7 +336,7 @@ function StandFunction()
         if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
 
             Library:Notify("Stand Found We Will Take A Break !!")
-            _G.AutoSniper = false
+            break
         end
 
         if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
@@ -358,10 +358,6 @@ function StandFunction()
 
                 EquipArrow()
 
-                mouse1click()
-
-                wait(1)
-
                 local gui = player.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
 
@@ -371,23 +367,12 @@ function StandFunction()
 
                 EquipRokaka()
 
-                mouse1click()
-
-                wait(1)
-
                 local gui = player.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
 
                 FireButton(yesButton)
             end
         end
-    end
-end
-
-function Auto_Sniper()
-    while _G.AutoSniper == true do wait()
-
-        StandFunction()
     end
 end
 
