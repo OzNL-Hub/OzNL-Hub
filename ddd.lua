@@ -334,11 +334,9 @@ function Auto_Sniper()
                 wait()
             until AlreadyHave == true
 
-            spawn(function()
-                local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
+            local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
 
-                humanoid:EquipTool(item1)
-            end)
+            humanoid:EquipTool(item1)
         end
 
         local function EquipRokaka()
@@ -348,11 +346,9 @@ function Auto_Sniper()
                 wait()
             until AlreadyHave == true
 
-            spawn(function()
-                local item2 = player.Backpack:WaitForChild("Rokakaka")
+            local item2 = player.Backpack:WaitForChild("Rokakaka")
 
-                humanoid:EquipTool(item2)
-            end)
+            humanoid:EquipTool(item2)
         end
 
         repeat
