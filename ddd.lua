@@ -358,8 +358,6 @@ function Auto_Sniper()
 
                 if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
 
-                    -- AddStat Method
-    
                     if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
     
                         local args = {
@@ -371,22 +369,20 @@ function Auto_Sniper()
                         }
                         
                         game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-                    else
-
-                        EquipArrow()
-
-                        mouse1click()
-
-                        wait(1)
-    
-                        local gui = player.PlayerGui:WaitForChild("DialogueGui")
-                        local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
-
-                        FireButton(yesButton)
                     end
-                end
+
+                    EquipArrow()
+
+                    mouse1click()
+
+                    wait(1)
+    
+                    local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                    local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+
+                    FireButton(yesButton)
         
-                if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
+                elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
 
                     EquipRokaka()
 
