@@ -334,10 +334,11 @@ function Auto_Sniper()
                 wait()
             until AlreadyHave == true
 
-            local item1 = player.Backpack:FindFirstChild("Mysterious Arrow")
-            local item2 = player.Backpack:FindFirstChild("Rokakaka")
+            spawn(function()
+                local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
 
-            humanoid:EquipTool(item1)
+                humanoid:EquipTool(item1)
+            end)
         end
 
         local function EquipRokaka()
@@ -347,10 +348,11 @@ function Auto_Sniper()
                 wait()
             until AlreadyHave == true
 
-            local item1 = player.Backpack:FindFirstChild("Mysterious Arrow")
-            local item2 = player.Backpack:FindFirstChild("Rokakaka")
+            spawn(function()
+                local item2 = player.Backpack:WaitForChild("Rokakaka")
 
-            humanoid:EquipTool(item2)
+                humanoid:EquipTool(item2)
+            end)
         end
 
         repeat
@@ -373,11 +375,7 @@ function Auto_Sniper()
                         }
                         
                         game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-
-                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                     else
-
-                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 
                         EquipArrow()
 
@@ -394,10 +392,8 @@ function Auto_Sniper()
         
                 if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
 
-                    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                    
                     EquipRokaka()
-                    
+
                     mouse1click()
 
                     wait(1)
