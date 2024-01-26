@@ -316,23 +316,8 @@ end
 
 function Auto_Sniper()
     while _G.AutoSniper == true do wait()
-        
-        local function CheckEquip()
-            
-            if player.Backpack:FindFirstChild("Mysterious Arrow") and player.Backpack:FindFirstChild("Rokakaka") then
-                
-                return true
-            else
-                return false
-            end
-        end
 
         local function EquipArrow()
-            local AlreadyHave = CheckEquip()
-
-            repeat
-                wait()
-            until AlreadyHave == true
 
             local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
 
@@ -340,11 +325,6 @@ function Auto_Sniper()
         end
 
         local function EquipRokaka()
-            local AlreadyHave = CheckEquip()
-
-            repeat
-                wait()
-            until AlreadyHave == true
 
             local item2 = player.Backpack:WaitForChild("Rokakaka")
 
