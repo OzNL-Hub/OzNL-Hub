@@ -314,75 +314,82 @@ local function FireButton(x)
     end
 end
 
+function StandFunction()
+    if _G.AutoSniper == true then
+        
+        local function EquipArrow()
+
+            local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
+
+            humanoid:EquipTool(item1)
+        end
+
+        local function EquipRokaka()
+
+            local item2 = player.Backpack:WaitForChild("Rokakaka")
+
+            humanoid:EquipTool(item2)
+        end
+
+        --
+
+        if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
+
+            Library:Notify("Stand Found We Will Take A Break !!")
+        end
+
+        if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
+
+            if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
+
+                if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
+
+                    local args = {
+                        [1] = "LearnSkill",
+                        [2] = {
+                            ["Skill"] = "Worthiness I",
+                            ["SkillTreeType"] = "Character"
+                        }
+                    }
+                    
+                    game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
+                end
+
+                EquipArrow()
+
+                mouse1click()
+
+                wait(1)
+
+                local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+
+                FireButton(yesButton)
+    
+            elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
+
+                EquipRokaka()
+
+                mouse1click()
+
+                wait(1)
+
+                local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+
+                FireButton(yesButton)
+            end
+        end
+    end
+end
+
 function Auto_Sniper()
     while _G.AutoSniper == true do wait()
 
         if humanoid.Health > 1 then
-
-            local function EquipArrow()
-
-                local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
-
-                humanoid:EquipTool(item1)
-            end
-
-            local function EquipRokaka()
-
-                local item2 = player.Backpack:WaitForChild("Rokakaka")
-
-                humanoid:EquipTool(item2)
-            end
-
-            --
-
-            if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
-
-                Library:Notify("Stand Found We Will Take A Break !!")
-                break
-            end
-
-            if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
-
-                if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
-
-                    if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
-
-                        local args = {
-                            [1] = "LearnSkill",
-                            [2] = {
-                                ["Skill"] = "Worthiness I",
-                                ["SkillTreeType"] = "Character"
-                            }
-                        }
-                        
-                        game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-                    end
-
-                    EquipArrow()
-
-                    mouse1click()
-
-                    wait(1)
-
-                    local gui = player.PlayerGui:WaitForChild("DialogueGui")
-                    local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
-
-                    FireButton(yesButton)
-        
-                elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
-
-                    EquipRokaka()
-
-                    mouse1click()
-
-                    wait(1)
-
-                    local gui = player.PlayerGui:WaitForChild("DialogueGui")
-                    local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
-
-                    FireButton(yesButton)
-                end
-            end
+            StandFunction()
+        else
+            Library:Notify("Player is dead...")
         end
     end
 end
