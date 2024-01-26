@@ -340,18 +340,18 @@ spawn(function()
 
             if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
 
-                humanoid:EquipTool(player.Backpack:WaitForChild("Mysterious Arrow"))
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Mysterious Arrow"))
 
-                local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                local gui = game.Players.LocalPlayer.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
 
                 FireButton(yesButton)
     
             elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
 
-                humanoid:EquipTool(player.Backpack:WaitForChild("Rokakaka"))
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Rokakaka"))
 
-                local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                local gui = game.Players.LocalPlayer.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
 
                 FireButton(yesButton)
