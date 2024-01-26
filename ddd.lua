@@ -316,7 +316,7 @@ end
 
 function AutoSnipe()
 
-    if _G.AutoSniper == true then
+    while _G.AutoSniper == true do wait()
         repeat
             wait()
 
@@ -340,7 +340,7 @@ function AutoSnipe()
             end
             
         until _G.AutoSniper == false or _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value]
-        _G.AutoSniper = false
+        break
     end
 end
 
