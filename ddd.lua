@@ -317,20 +317,6 @@ end
 function Auto_Sniper()
     while _G.AutoSniper == true do wait()
 
-        local function EquipArrow()
-
-            local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
-
-            humanoid:EquipTool(item1)
-        end
-
-        local function EquipRokaka()
-
-            local item2 = player.Backpack:WaitForChild("Rokakaka")
-
-            humanoid:EquipTool(item2)
-        end
-
         --
 
         if _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
@@ -356,7 +342,9 @@ function Auto_Sniper()
                     game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
                 end
 
-                EquipArrow()
+                local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
+
+                humanoid:EquipTool(item1)
 
                 local gui = player.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
@@ -365,8 +353,10 @@ function Auto_Sniper()
     
             elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
 
-                EquipRokaka()
+                local item2 = player.Backpack:WaitForChild("Rokakaka")
 
+                humanoid:EquipTool(item2)
+                
                 local gui = player.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
 
