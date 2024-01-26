@@ -372,23 +372,16 @@ function Auto_Sniper()
                             }
                         }
                         
-                        game:GetService("Players").LocalPlayer.Character.RemoteFunction:InvokeServer(unpack(args))
+                        game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
 
                         humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-
-                        EquipArrow()
-
-                        wait(1)
-    
-                        local gui = player.PlayerGui:WaitForChild("DialogueGui")
-                        local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
-
-                        FireButton(yesButton)
                     else
 
                         humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 
                         EquipArrow()
+
+                        mouse1click()
 
                         wait(1)
     
@@ -404,6 +397,8 @@ function Auto_Sniper()
                     humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                     
                     EquipRokaka()
+                    
+                    mouse1click()
 
                     wait(1)
     
