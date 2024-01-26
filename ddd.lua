@@ -308,6 +308,12 @@ Options.MyStands:SetValue({
 
 _G.AutoSniper = false
 
+local function FireButton(x)
+    for i, v in pairs(getconnections(x.MouseButton1Click)) do
+        v:Function()
+    end
+end
+
 function Auto_Sniper()
     while _G.AutoSniper == true do wait()
         
@@ -332,8 +338,6 @@ function Auto_Sniper()
             local item2 = player.Backpack:FindFirstChild("Rokakaka")
 
             humanoid:EquipTool(item1)
-
-            mousemoverel(1219, 599)
         end
 
         local function EquipRokaka()
@@ -347,8 +351,6 @@ function Auto_Sniper()
             local item2 = player.Backpack:FindFirstChild("Rokakaka")
 
             humanoid:EquipTool(item2)
-
-            mousemoverel(1219, 599)
         end
 
         repeat
@@ -373,30 +375,27 @@ function Auto_Sniper()
                         game:GetService("Players").LocalPlayer.Character.RemoteFunction:InvokeServer(unpack(args))
 
                         humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-    
-                        mousemoverel(1219, 599)
 
                         EquipArrow()
 
                         wait(1)
     
-                        mouse1click()
-            
-                        mouse1click()
-                        
+                        local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                        local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+
+                        FireButton(yesButton)
                     else
 
                         humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-    
-                        mousemoverel(1219, 599)
 
                         EquipArrow()
 
                         wait(1)
     
-                        mouse1click()
-            
-                        mouse1click()
+                        local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                        local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+
+                        FireButton(yesButton)
                     end
                 end
         
@@ -408,11 +407,10 @@ function Auto_Sniper()
 
                     wait(1)
     
-                    mousemoverel(1219, 599)
-        
-                    mouse1click()
-        
-                    mouse1click()
+                    local gui = player.PlayerGui:WaitForChild("DialogueGui")
+                    local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
+
+                    FireButton(yesButton)
                 end
             end
 
