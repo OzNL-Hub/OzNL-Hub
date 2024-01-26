@@ -323,28 +323,13 @@ function Auto_Sniper()
 
             Library:Notify("Stand Found We Will Take A Break !!")
             break
-        end
+        
 
-        if not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
+        elseif not _G.SniperStand[game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value] then
 
             if game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value == "None" then
 
-                if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
-
-                    local args = {
-                        [1] = "LearnSkill",
-                        [2] = {
-                            ["Skill"] = "Worthiness I",
-                            ["SkillTreeType"] = "Character"
-                        }
-                    }
-                    
-                    game:GetService("Players").LocalPlayer.Character:WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-                end
-
-                local item1 = player.Backpack:WaitForChild("Mysterious Arrow")
-
-                humanoid:EquipTool(item1)
+                humanoid:EquipTool(player.Backpack:WaitForChild("Mysterious Arrow"))
 
                 local gui = player.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
@@ -353,10 +338,8 @@ function Auto_Sniper()
     
             elseif game:GetService("Players").LocalPlayer.PlayerStats.Stand.Value ~= "None" then
 
-                local item2 = player.Backpack:WaitForChild("Rokakaka")
+                humanoid:EquipTool(player.Backpack:WaitForChild("Rokakaka"))
 
-                humanoid:EquipTool(item2)
-                
                 local gui = player.PlayerGui:WaitForChild("DialogueGui")
                 local yesButton = gui:WaitForChild("Frame"):WaitForChild("Options"):WaitForChild("Option1"):WaitForChild("TextButton")
 
