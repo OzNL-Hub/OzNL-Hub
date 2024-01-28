@@ -1,11 +1,11 @@
   while  true do wait()
       
-      if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness V"].Value == false then
+      if game:GetService("Players").LocalPlayer.CharacterSkillTree["Worthiness I"].Value == false then
 
           local args = {
               [1] = "LearnSkill",
               [2] = {
-                  ["Skill"] = "Worthiness V",
+                  ["Skill"] = "Worthiness I",
                   ["SkillTreeType"] = "Character"
               }
           }
