@@ -126,172 +126,169 @@ local PepsisWorld = library:CreateWindow({
 local GeneralTab = PepsisWorld:CreateTab({
     Name = "General"
 })
-
 local FarmingSection = GeneralTab:CreateSection({
-    Name = "Farming",
-    Side = "Left"
+    Name = "Farming"
+})
+FarmingSection:AddToggle({
+    Name = "EXP Grinder",
+    Flag = "FarmingSection_EXPGrinder"
+})
+FarmingSection:AddToggle({
+    Name = "Trick Spammer",
+    Flag = "FarmingSection_TrickSpammer",
+    Keybind = 1,
+    Callback = print
+})
+FarmingSection:AddSlider({
+    Name = "Trick Rate",
+    Flag = "FarmingSection_TrickRate",
+    Value = 0.15,
+    Precise = 2,
+    Min = 0,
+    Max = 1
+})
+FarmingSection:AddToggle({
+    Name = "TP To Coins",
+    Flag = "FarmingSection_TPCoins"
+})
+FarmingSection:AddToggle({
+    Name = "Collect Coins",
+    Flag = "FarmingSection_CollectCoins",
+    Callback = print
+})
+FarmingSection:AddSlider({
+    Name = "Coin Distance",
+    Flag = "FarmingSection_CoinDistance",
+    Value = 175,
+    Min = 0,
+    Max = 200,
+    Format = function(Value)
+        if Value == 0 then
+            return "Collection Distance: Infinite"
+        else
+            return "Collection Distance: " .. tostring(Value)
+        end
+    end
 })
 
-local HorsesSection = GeneralTab:CreateSection({
-    Name = "Horses",
+local BoardControlSection = GeneralTab:CreateSection({
+    Name = "Board Control"
+})
+BoardControlSection:AddToggle({
+    Name = "Anti Trip/Ragdoll",
+    Flag = "BoardControlSection_AntiTripRagdoll",
+    Callback = print
+})
+BoardControlSection:AddToggle({
+    Name = "No Wear & Tear",
+    Flag = "BoardControlSection_NoWearTear"
+})
+BoardControlSection:AddToggle({
+    Name = "No Trick Cooldown",
+    Flag = "BoardControlSection_NoTrickCooldown",
+    Callback = print
+})
+BoardControlSection:AddToggle({
+    Name = "Extend Combo Timout",
+    Flag = "BoardControlSection_ExtendComboTimeout"
+})
+BoardControlSection:AddSlider({
+    Name = "Timeout Extension",
+    Flag = "BoardControlSection_CoinDistance",
+    Value = 3,
+    Min = 0,
+    Max = 20,
+    Format = function(Value)
+        if Value == 0 then
+            return "Combo Timeout: Never"
+        else
+            return "Combo Timeout: " .. tostring(Value) .. "s"
+        end
+    end
+})
+
+local MiscSection = GeneralTab:CreateSection({
+    Name = "Misc",
     Side = "Right"
 })
+MiscSection:AddToggle({
+    Name = "Unlock Gamepasses",
+    Flag = "MiscSection_UnlockGamepasses",
+    Callback = print
+})
+MiscSection:AddToggle({
+    Name = "Auto Compete",
+    Flag = "MiscSection_AutoCompete",
+    Callback = print
+})
+MiscSection:AddButton({
+    Name = "Repair Board",
+    Callback = function()
+        print("Fixed")
+    end
+})
+MiscSection:AddKeybind({
+    Name = "Test Key",
+    Callback = print
+})
+MiscSection:AddToggle({
+    Name = "Test Toggle/Key",
+    Keybind = {
+        Mode = "Dynamic"
+    },
+    Callback = print
+})
 
--- Farming Section
-
-_G.AutoGetFeeds = false
-_G.CurrentBarrel = nil
-
-function AutoGetFeeds()
-    while _G.AutoGetFeeds == true do wait()
-
-        local folder = game.Workspace.Interactions.Resource
-        local ClickDetector
-
-        if _G.CurrentBarrel == nil then
-
-            for i, v in pairs(folder) do
-                if v.Name == "AppleBarrel" then
-                    _G.CurrentBarrel = v
-                    ClickDetector = _G.CurrentBarrel.ClickDetector
-                end
-            end
-
+local FunSection = GeneralTab:CreateSection({
+    Name = "Fun Cosmetics"
+})
+FunSection:AddToggle({
+    Name = "Ragdoll Assumes Flight",
+    Flag = "FunSection_AssumesFlight"
+})
+FunSection:AddToggle({
+    Name = "Ragdoll On Player Collision",
+    Flag = "FunSection_RagdollOnPlayerCollision"
+})
+FunSection:AddToggle({
+    Name = "Un-Ragdoll When Motionless",
+    Flag = "FunSection_UnRagdollWhenMotionless"
+})
+FunSection:AddToggle({
+    Name = "Extend Ragdoll Duration",
+    Flag = "FunSection_ExtendRagdollDuration"
+})
+FunSection:AddSlider({
+    Name = "Coin Distance",
+    Flag = "FarmingSection_Coin Distance",
+    Value = 4,
+    Min = 0,
+    Max = 60,
+    Textbox = true,
+    Format = function(Value)
+        if Value == 0 then
+            return "Ragdoll Extension: Indefinite"
         else
-
-            if _G.CurrentBarrel.DefaultResourceNodeGui.Bar.BackGround.HP.Text == "1" then
-                fireclickdetector(ClickDetector)
-                return
-            end
-
-            fireclickdetector(ClickDetector)
+            return "Ragdoll Extension: " .. tostring(Value) .. "s"
         end
-    end
-end
-
-function AutoDamageFeeds()
-    while _G.AutoGetFeeds == true do wait()
-
-        local args = {
-            [1] = game:GetService("Players").LocalPlayer.Character.Animals:FindFirstChild("1")
-        }
-        
-        workspace:WaitForChild("Interactions"):WaitForChild("Resource"):WaitForChild("AppleBarrel"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
-
-        local args2 = {
-            [1] = game:GetService("Players").LocalPlayer.Character.Animals:FindFirstChild("2")
-        }
-        
-        workspace:WaitForChild("Interactions"):WaitForChild("Resource"):WaitForChild("AppleBarrel"):WaitForChild("RemoteEvent"):FireServer(unpack(args2))
-
-        local args3 = {
-            [1] = game:GetService("Players").LocalPlayer.Character.Animals:FindFirstChild("3")
-        }
-        
-        workspace:WaitForChild("Interactions"):WaitForChild("Resource"):WaitForChild("AppleBarrel"):WaitForChild("RemoteEvent"):FireServer(unpack(args3))
-
-        local args4 = {
-            [1] = "\1"
-        }
-        
-        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SendDropsRemote"):FireServer(unpack(args4))
-        
-        
-    end
-end
-
-FarmingSection:AddToggle({
-    Name = "Auto Get Feed",
-    Flag = "FarmingSection_GetFeed",
-    Callback = function(NewValue, OldValue)
-        _G.AutoGetFeeds = NewValue
-        AutoGetFeeds()
-        AutoDamageFeeds()
     end
 })
 
--- Horses Section
-
-_G.AutoFeedHorse = false
-_G.CurrentHorse = nil
-
-function AutoFeedHorse()
-    while _G.AutoFeedHorse == true do wait()
-        
-        local args = {
-            [1] = _G.CurrentHorse.Name,
-            [2] = "Apple"
-        }
-        
-        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("FeedAnimalRemote"):InvokeServer(unpack(args))
-        
-    end
-end
-
-
-
-HorsesSection:AddToggle({
-    Name = "Auto Feed Horse (Apple)",
-    Flag = "HorsesSection_FeedHorse",
-    Callback = function(NewValue, OldValue)
-        _G.AutoFeedHorse = NewValue
-        AutoFeedHorse()
-    end
-})
-
-local horsesTable = {}
-
-spawn(function()
-    for i, v in pairs(game.Players.LocalPlayer.Data.Animals:GetChildren()) do
-        
-        local explore = v.CustomNmae.Value
-
-        if not table.find(horsesTable, explore) then
-            
-            table.insert(horsesTable, explore)
-        end
-    end
-end)
-
-game.Players.LocalPlayer.Data.Animals.ChildAdded:Connect(function(Child)
-    local explore = Child.CustomNmae.Value
-
-    if not table.find(horsesTable, explore) then
-            
-        table.insert(horsesTable, explore)
-    end
-end)
-
-game.Players.LocalPlayer.Data.Animals.ChildRemoved:Connect(function(Child)
-
-    table.clear(horsesTable)
-
-    for i, v in pairs(game.Players.LocalPlayer.Data.Animals:GetChildren()) do
-        
-        local explore = v.CustomNmae.Value
-
-        if not table.find(horsesTable, explore) then
-            
-            table.insert(horsesTable, explore)
-        end
-    end
-end)
-
-
-HorsesSection:AddSearchBox({
-    Name = "Choose Horse",
-    Value = "None",
-    List = horsesTable,
-    Flag = "HorsesSection_Horses",
+FunSection:AddSearchBox({
+    Name = "Choose Killaura Method",
+    Value = "Combat",
+    List = {"Combat", "Sword"},
+    Flag = "Farming_ChooseWeapon",
     Callback = function(NewValue, LastValue)
 
-        for i, v in pairs(game.Players.LocalPlayer.Data.Animals:GetChildren()) do
-        
-            if v.CustomNmae.Value == NewValue then
-                
-                _G.CurrentHorse = v
-            end
-        end
+    end
+})
 
+FunSection:AddTextbox({
+    Name = "Change Clan",
+    Flag = "Modifying_ChangeClan",
+    Value = "None",
+    Callback = function(NewValue, OldValue)
+        
     end
 })
