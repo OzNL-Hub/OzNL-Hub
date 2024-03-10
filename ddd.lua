@@ -238,7 +238,7 @@ local horsesTable = {}
 spawn(function()
     for i, v in pairs(game.Players.LocalPlayer.PlayerGui.Data.Animals:GetChildren()) do
         
-        local explore = v.CustomNmae.Value
+        local explore = v.CustomName.Value
 
         if not table.find(horsesTable, explore) then
             
@@ -248,7 +248,7 @@ spawn(function()
 end)
 
 game.Players.LocalPlayer.PlayerGui.Data.Animals.ChildAdded:Connect(function(Child)
-    local explore = Child.CustomNmae.Value
+    local explore = Child.CustomName.Value
 
     if not table.find(horsesTable, explore) then
             
@@ -262,7 +262,7 @@ game.Players.LocalPlayer.PlayerGui.Data.Animals.ChildRemoved:Connect(function(Ch
 
     for i, v in pairs(game.Players.LocalPlayer.PlayerGui.Data.Animals:GetChildren()) do
         
-        local explore = v.CustomNmae.Value
+        local explore = v.CustomName.Value
 
         if not table.find(horsesTable, explore) then
             
@@ -281,7 +281,7 @@ HorsesSection:AddSearchBox({
 
         for i, v in pairs(game.Players.LocalPlayer.PlayerGui.Data.Animals:GetChildren()) do
         
-            if v.CustomNmae.Value == NewValue then
+            if v.CustomName.Value == NewValue then
                 
                 _G.CurrentHorse = v
             end
