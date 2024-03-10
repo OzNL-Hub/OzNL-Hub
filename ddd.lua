@@ -140,25 +140,24 @@ function AutoGetFeeds()
     while _G.AutoGetFeeds == true do wait()
 
         local folder = game.Workspace.Interactions.Resource:GetChildren()
-        local ClickDetector
+        local Remote
 
         if _G.CurrentBarrel == nil then
 
             for i, v in pairs(folder) do
                 if v.Name == "AppleBarrel" then
                     _G.CurrentBarrel = v
-                    ClickDetector = _G.CurrentBarrel.ClickDetector
                 end
             end
 
         else
 
-            if _G.CurrentBarrel.DefaultResourceNodeGui.Bar.Background.HP.Text == "1" then
-                fireclickdetector(ClickDetector)
-                return
-            end
-
-            fireclickdetector(ClickDetector)
+            local args = {
+                [1] = game:GetService("Players").LocalPlayer.Character.Animals:FindFirstChild("1")
+            }
+            
+            _G.CurrentBarrel:WaitForChild("RemoteEvent"):FireServer(unpack(args))
+            
         end
     end
 end
