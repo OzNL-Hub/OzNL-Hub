@@ -153,7 +153,7 @@ function AutoGetFeeds()
 
         else
 
-            if _G.CurrentBarrel.DefaultResourceNodeGui.Bar.BackGround.HP.Text == "1" then
+            if _G.CurrentBarrel.DefaultResourceNodeGui.Bar.Background.HP.Text == "1" then
                 fireclickdetector(ClickDetector)
                 return
             end
