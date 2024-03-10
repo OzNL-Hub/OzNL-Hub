@@ -139,7 +139,7 @@ _G.CurrentBarrel = nil
 function AutoGetFeeds()
     while _G.AutoGetFeeds == true do wait()
 
-        local folder = game.Workspace.Interactions.Resource
+        local folder = game.Workspace.Interactions.Resource:GetChildren()
         local ClickDetector
 
         if _G.CurrentBarrel == nil then
@@ -232,6 +232,8 @@ HorsesSection:AddToggle({
         AutoFeedHorse()
     end
 })
+
+wait(3)
 
 local horsesTable = {}
 
