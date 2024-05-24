@@ -403,8 +403,8 @@ local function ESP(plr)
                             library.blacktracer.From = Vector2.new(camera.ViewportSize.X*0.5, camera.ViewportSize.Y)
                         end
                         if Settings.Tracer_FollowMouse then
-                            library.tracer.From = Vector2.new(mouse.X, mouse.Y+36)
-                            library.blacktracer.From = Vector2.new(mouse.X, mouse.Y+36)
+                            library.tracer.From = Vector2.new(mouse.Hit.Position.X, mouse.Hit.Position.Y+36)
+                            library.blacktracer.From = Vector2.new(mouse.Hit.Position.X, mouse.Hit.Position.Y+36)
                         end
                         library.tracer.To = Vector2.new(HumPos.X, HumPos.Y + DistanceY*2)
                         library.blacktracer.To = Vector2.new(HumPos.X, HumPos.Y + DistanceY*2)
