@@ -931,11 +931,15 @@ end
 
 _G.Kebind = ""
 
+wait(1)
+
 LeftGroupBox3:AddToggle('WalkSpeedToggle', {
     Text = 'Walkspeed',
     Default = false, -- Default value (true / false)
     Tooltip = 'Make You Faster', -- Information shown when you hover over the toggle
 })
+
+wait(1)
 
 Toggles.WalkSpeedToggle:OnChanged(function()
 
