@@ -935,109 +935,109 @@ end
 
 _G.Kebind = ""
 
--- LeftGroupBox3:AddToggle('WalkSpeedToggle', {
---     Text = 'Walkspeed',
---     Default = false, -- Default value (true / false)
---     Tooltip = 'Make You Faster', -- Information shown when you hover over the toggle
--- })
+LeftGroupBox3:AddToggle('WalkSpeedToggle', {
+    Text = 'Walkspeed',
+    Default = false, -- Default value (true / false)
+    Tooltip = 'Make You Faster', -- Information shown when you hover over the toggle
+})
 
--- Toggles.WalkSpeedToggle:OnChanged(function()
+Toggles.WalkSpeedToggle:OnChanged(function()
 
---     local UIS = game:GetService("UserInputService")
---     local RS = game:GetService("RunService")
---     local W, A, S, D
---     local xVelo, yVelo
+    local UIS = game:GetService("UserInputService")
+    local RS = game:GetService("RunService")
+    local W, A, S, D
+    local xVelo, yVelo
     
---     RS.RenderStepped:Connect(function()
+    RS.RenderStepped:Connect(function()
 
---         if Toggles.WalkSpeedToggle.Value == true and _G.Kebind == "" then
+        if Toggles.WalkSpeedToggle.Value == true and _G.Kebind == "" then
 
---             local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+            local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
 
---             HRP.Anchored = false
+            HRP.Anchored = false
 
---             game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
 
---             local C = game.Workspace.CurrentCamera
---             local LV = C.CFrame.LookVector
---             for i,v in pairs(UIS:GetKeysPressed()) do
---                 if v.KeyCode == Enum.KeyCode.W then
---                     W = true
---                 end
---                 if v.KeyCode == Enum.KeyCode.A then
---                     A = true
---                 end
---                 if v.KeyCode == Enum.KeyCode.S then
---                     S = true
---                 end
---                 if v.KeyCode == Enum.KeyCode.D then
---                     D = true
---                 end
---             end
+            local C = game.Workspace.CurrentCamera
+            local LV = C.CFrame.LookVector
+            for i,v in pairs(UIS:GetKeysPressed()) do
+                if v.KeyCode == Enum.KeyCode.W then
+                    W = true
+                end
+                if v.KeyCode == Enum.KeyCode.A then
+                    A = true
+                end
+                if v.KeyCode == Enum.KeyCode.S then
+                    S = true
+                end
+                if v.KeyCode == Enum.KeyCode.D then
+                    D = true
+                end
+            end
          
---             if W == true and S == true then
---                 yVelo = false
---                 W,S = nil
---             end
+            if W == true and S == true then
+                yVelo = false
+                W,S = nil
+            end
          
---             if A == true and D == true then
---                 xVelo = false
---                 A,D = nil
---             end
+            if A == true and D == true then
+                xVelo = false
+                A,D = nil
+            end
          
---             if yVelo ~= false then
---                 if W == true then
---                     if xVelo ~= false then
---                         if A == true then
---                             local LeftLV = (C.CFrame * CFrame.Angles(0, math.rad(45), 0)).LookVector
---                             HRP.Velocity = Vector3.new((LeftLV.X * _G.walkSpeed), HRP.Velocity.Y, (LeftLV.Z * _G.walkSpeed))
---                             W,A = nil
---                         else
---                             if D == true then
---                                 local RightLV = (C.CFrame * CFrame.Angles(0, math.rad(-45), 0)).LookVector
---                                 HRP.Velocity = Vector3.new((RightLV.X * _G.walkSpeed), HRP.Velocity.Y, (RightLV.Z * _G.walkSpeed))
---                                 W,D = nil
---                             end
---                         end
---                     end
---                 else
---                     if S == true then
---                         if xVelo ~= false then
---                             if A == true then
---                                 local LeftLV = (C.CFrame * CFrame.Angles(0, math.rad(135), 0)).LookVector
---                                 HRP.Velocity = Vector3.new((LeftLV.X * _G.walkSpeed), HRP.Velocity.Y, (LeftLV.Z * _G.walkSpeed))
---                                 S,A = nil
---                             else
---                                 if D == true then
---                                     local RightLV = (C.CFrame * CFrame.Angles(0, math.rad(-135), 0)).LookVector
---                                     HRP.Velocity = Vector3.new((RightLV.X * _G.walkSpeed), HRP.Velocity.Y, (RightLV.Z * _G.walkSpeed))
---                                     S,D = nil
---                                 end
---                             end
---                         end
---                     end
---                 end
---             end
+            if yVelo ~= false then
+                if W == true then
+                    if xVelo ~= false then
+                        if A == true then
+                            local LeftLV = (C.CFrame * CFrame.Angles(0, math.rad(45), 0)).LookVector
+                            HRP.Velocity = Vector3.new((LeftLV.X * _G.walkSpeed), HRP.Velocity.Y, (LeftLV.Z * _G.walkSpeed))
+                            W,A = nil
+                        else
+                            if D == true then
+                                local RightLV = (C.CFrame * CFrame.Angles(0, math.rad(-45), 0)).LookVector
+                                HRP.Velocity = Vector3.new((RightLV.X * _G.walkSpeed), HRP.Velocity.Y, (RightLV.Z * _G.walkSpeed))
+                                W,D = nil
+                            end
+                        end
+                    end
+                else
+                    if S == true then
+                        if xVelo ~= false then
+                            if A == true then
+                                local LeftLV = (C.CFrame * CFrame.Angles(0, math.rad(135), 0)).LookVector
+                                HRP.Velocity = Vector3.new((LeftLV.X * _G.walkSpeed), HRP.Velocity.Y, (LeftLV.Z * _G.walkSpeed))
+                                S,A = nil
+                            else
+                                if D == true then
+                                    local RightLV = (C.CFrame * CFrame.Angles(0, math.rad(-135), 0)).LookVector
+                                    HRP.Velocity = Vector3.new((RightLV.X * _G.walkSpeed), HRP.Velocity.Y, (RightLV.Z * _G.walkSpeed))
+                                    S,D = nil
+                                end
+                            end
+                        end
+                    end
+                end
+            end
          
---             if W == true then
---                 HRP.Velocity = Vector3.new((LV.X * _G.walkSpeed), HRP.Velocity.Y, (LV.Z * _G.walkSpeed))
---             end
---             if S == true then
---                 HRP.Velocity = Vector3.new(-(LV.X * _G.walkSpeed), HRP.Velocity.Y, -(LV.Z * _G.walkSpeed))
---             end
---             if A == true then
---                 local LeftLV = (C.CFrame * CFrame.Angles(0, math.rad(90), 0)).LookVector
---                 HRP.Velocity = Vector3.new((LeftLV.X * _G.walkSpeed), HRP.Velocity.Y, (LeftLV.Z * _G.walkSpeed))
---             end
---             if D == true then
---                 local RightLV = (C.CFrame * CFrame.Angles(0, math.rad(-90), 0)).LookVector
---                 HRP.Velocity = Vector3.new((RightLV.X * _G.walkSpeed), HRP.Velocity.Y, (RightLV.Z * _G.walkSpeed))
---             end
+            if W == true then
+                HRP.Velocity = Vector3.new((LV.X * _G.walkSpeed), HRP.Velocity.Y, (LV.Z * _G.walkSpeed))
+            end
+            if S == true then
+                HRP.Velocity = Vector3.new(-(LV.X * _G.walkSpeed), HRP.Velocity.Y, -(LV.Z * _G.walkSpeed))
+            end
+            if A == true then
+                local LeftLV = (C.CFrame * CFrame.Angles(0, math.rad(90), 0)).LookVector
+                HRP.Velocity = Vector3.new((LeftLV.X * _G.walkSpeed), HRP.Velocity.Y, (LeftLV.Z * _G.walkSpeed))
+            end
+            if D == true then
+                local RightLV = (C.CFrame * CFrame.Angles(0, math.rad(-90), 0)).LookVector
+                HRP.Velocity = Vector3.new((RightLV.X * _G.walkSpeed), HRP.Velocity.Y, (RightLV.Z * _G.walkSpeed))
+            end
          
---             xVelo, yVelo, W, A, S, D = nil
---         end
---     end)
--- end)
+            xVelo, yVelo, W, A, S, D = nil
+        end
+    end)
+end)
 
 _G.Walk = false
 
@@ -1045,22 +1045,22 @@ _G.JumpP = false
 
 _G.Keybind2 = ""
 
--- LeftGroupBox3:AddToggle('JumpPowerToggle', {
---     Text = 'JumpPower',
---     Default = false, -- Default value (true / false)
---     Tooltip = '', -- Information shown when you hover over the toggle
--- })
+LeftGroupBox3:AddToggle('JumpPowerToggle', {
+    Text = 'JumpPower',
+    Default = false, -- Default value (true / false)
+    Tooltip = '', -- Information shown when you hover over the toggle
+})
 
--- Toggles.JumpPowerToggle:OnChanged(function()
---     game.Players.LocalPlayer.Character.Humanoid.Jumping:Connect(function()
---         if Toggles.JumpPowerToggle.Value == true and _G.Keybind2 == "" then
+Toggles.JumpPowerToggle:OnChanged(function()
+    game.Players.LocalPlayer.Character.Humanoid.Jumping:Connect(function()
+        if Toggles.JumpPowerToggle.Value == true and _G.Keybind2 == "" then
 
---             local jumpVelocity = math.sqrt(2 * _G.jumpPower * game.Workspace.Gravity)
+            local jumpVelocity = math.sqrt(2 * _G.jumpPower * game.Workspace.Gravity)
     
---             game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, jumpVelocity, 0)
---         end
---     end)
--- end)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, jumpVelocity, 0)
+        end
+    end)
+end)
 
 _G.hitbox123123 = false
 
@@ -1145,7 +1145,7 @@ function nocupfunct()
     end
 end
 
-LeftGroupBox:AddToggle('noclup', {
+LeftGroupBox3:AddToggle('noclup', {
     Text = 'No Clip',
     Default = false, -- Default value (true / false)
     Tooltip = 'gg', -- Information shown when you hover over the toggle
