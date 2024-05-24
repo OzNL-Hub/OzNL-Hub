@@ -933,7 +933,7 @@ _G.Kebind = ""
 
 wait(1)
 
-LeftGroupBox3:AddToggle('WalkSpeedToggle', {
+LeftGroupBox3:AddToggle('WalkSpeedToggle12', {
     Text = 'Walkspeed',
     Default = false, -- Default value (true / false)
     Tooltip = 'Make You Faster', -- Information shown when you hover over the toggle
@@ -941,7 +941,7 @@ LeftGroupBox3:AddToggle('WalkSpeedToggle', {
 
 wait(1)
 
-Toggles.WalkSpeedToggle:OnChanged(function()
+Toggles.WalkSpeedToggle12:OnChanged(function()
 
     local UIS = game:GetService("UserInputService")
     local RS = game:GetService("RunService")
@@ -950,7 +950,7 @@ Toggles.WalkSpeedToggle:OnChanged(function()
     
     RS.RenderStepped:Connect(function()
 
-        if Toggles.WalkSpeedToggle.Value == true and _G.Kebind == "" then
+        if Toggles.WalkSpeedToggle12.Value == true and _G.Kebind == "" then
 
             local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
 
@@ -1742,7 +1742,7 @@ Options.WalkSpeedKey:OnClick(function()
     
     RS.RenderStepped:Connect(function()
 
-        if Toggles.WalkSpeedToggle.Value == true and _G.Walk == true then
+        if Toggles.WalkSpeedToggle12.Value == true and _G.Walk == true then
 
             local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
 
