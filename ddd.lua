@@ -53,80 +53,64 @@ _G.Message4 = true
 
 _G.Message5 = true
 
--- spawn(function()
---     while true do
+spawn(function()
+    while true do
 
---         wait(0.085)
+        wait(0.085)
 
---         if HisWipe == true then
---             _G.Njumb += 1
+        if HisWipe == true then
+            _G.Njumb += 1
 
---             -- task.delay(math.random(1, 10), function()
---             --     if _G.Message1 == true then
---             --         _G.Message1 = false
+            task.delay(math.random(1, 10), function()
+                if _G.Message1 == true then
+                    _G.Message1 = false
 
---             --         Library:Notify("Uploading...")
---             --     end
---             -- end)
+                    Library:Notify("Uploading...")
+                end
+            end)
                 
---             -- task.delay(math.random(4, 5), function()
---             --     if _G.Message2 == true then
---             --         _G.Message2 = false
+            task.delay(math.random(4, 5), function()
+                if _G.Message2 == true then
+                    _G.Message2 = false
 
---             --         Library:Notify("Bulding...")
---             --     end
---             -- end)
+                    Library:Notify("Bulding...")
+                end
+            end)
                 
---             -- task.delay(math.random(6, 8), function()
---             --     if _G.Message3 == true then
---             --         _G.Message3 = false
+            task.delay(math.random(6, 8), function()
+                if _G.Message3 == true then
+                    _G.Message3 = false
     
---             --         Library:Notify("Checking key...")
---             --     end
---             -- end)
+                    Library:Notify("Checking key...")
+                end
+            end)
                 
---             -- task.delay(math.random(7, 8), function()
---             --     if _G.Message4 == true then
---             --         _G.Message4 = false
+            task.delay(math.random(7, 8), function()
+                if _G.Message4 == true then
+                    _G.Message4 = false
     
---             --         Library:Notify("We got close...")
---             --     end
---             -- end)
+                    Library:Notify("We got close...")
+                end
+            end)
 
---             -- task.delay(math.random(8.5, 9), function()
---             --     if _G.Message5 == true then
---             --         _G.Message5 = false
+            task.delay(math.random(8.5, 9), function()
+                if _G.Message5 == true then
+                    _G.Message5 = false
 
---             --         Library:Notify("We're done...")
---             --     end
---             -- end)
---         end
+                    Library:Notify("We're done...")
 
---         -- local function UpdateHWID(tables, formatId, formatId2)
---         --     if table.find(tables, tostring(Player.Name) .. tostring(formatId), tostring(formatId)) then
---         --         wait()
---         --     elseif table.find(tables, tostring(Player.Name) .. tostring(formatId), tostring(formatId2)) then
+                    
+                end
+            end)
 
---         --         table.remove(tables, tostring(formatId))
-
---         --         table.insert(tables, formatId, Player.Name .. formatId)
---         --     end
---         -- end
-
---         if _G.Njumb > 100 or _G.Njumb == 100 and _G.Message1 == false and _G.Message2 == false and _G.Message3 == false and _G.Message4 == false and _G.Message5 == false then
-
---             for i, v in pairs(zz) do
---                 if i == id and v ~= nil then
---                     _G.Playing = true
-
---                     -- UpdateHWID(zz, id, i)
---                 end
---             end
-
---             break
---         end
---     end
--- end)
+            repeat
+                wait()
+            until  _G.Message5 == false
+            
+            break
+        end
+    end
+end)
 
 repeat
     task.wait()
