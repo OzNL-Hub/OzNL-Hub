@@ -39,81 +39,8 @@ local HisWipe = true
 
 local Times = 0
 
-_G.Playing = true
-
-_G.Njumb = 0
-
-_G.Message1 = true
-
-_G.Message2 = true
-
-_G.Message3 = true
-
-_G.Message4 = true
-
-_G.Message5 = true
-
-spawn(function()
-    while true do
-
-        wait(0.085)
-
-        if HisWipe == true then
-            _G.Njumb += 1
-
-            task.delay(math.random(1, 10), function()
-                if _G.Message1 == true then
-                    _G.Message1 = false
-
-                    Library:Notify("Uploading...")
-                end
-            end)
-                
-            task.delay(math.random(4, 5), function()
-                if _G.Message2 == true then
-                    _G.Message2 = false
-
-                    Library:Notify("Bulding...")
-                end
-            end)
-                
-            task.delay(math.random(6, 8), function()
-                if _G.Message3 == true then
-                    _G.Message3 = false
-    
-                    Library:Notify("Checking key...")
-                end
-            end)
-                
-            task.delay(math.random(7, 8), function()
-                if _G.Message4 == true then
-                    _G.Message4 = false
-    
-                    Library:Notify("We got close...")
-                end
-            end)
-
-            task.delay(math.random(8.5, 9), function()
-                if _G.Message5 == true then
-                    _G.Message5 = false
-
-                    Library:Notify("We're done...")
-
-                    
-                end
-            end)
-
-            repeat
-                wait()
-            until  _G.Message5 == false
-            
-            break
-        end
-    end
-end)
-
 repeat
-    task.wait()
+    task.wait(5)
 until game:IsLoaded()
 
 local Window = Library:CreateWindow({
