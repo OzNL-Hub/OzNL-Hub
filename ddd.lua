@@ -699,7 +699,7 @@ function ChestESP()
                                         Textlabel.Visible = _G.RareChest
                                         Metters.Visible = _G.RareChest
                 
-                                        if not Textlabel and not Metters then
+                                        if not Textlabel and not Metters and not x then
                                             Textlabel.Visible = false;
                                             Metters.Visible = false
                                             break;
@@ -777,7 +777,7 @@ function ChestESP()
                                         Textlabel.Visible = _G.LegandryChest
                                         Metters.Visible = _G.LegandryChest
                 
-                                        if not Textlabel and not Metters then
+                                        if not Textlabel and not Metters and not x then
                                             Textlabel.Visible = false;
                                             Metters.Visible = false
                                             break;
@@ -853,7 +853,7 @@ function ChestESP()
                                         Textlabel.Visible = _G.MythicChest
                                         Metters.Visible = _G.MythicChest
                 
-                                        if not Textlabel and not Metters then
+                                        if not Textlabel and not Metters and not x then
                                             Textlabel.Visible = false;
                                             Metters.Visible = false
                                             break;
