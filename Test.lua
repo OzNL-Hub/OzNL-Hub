@@ -117,23 +117,72 @@ local GeneralTab = PepsisWorld:CreateTab({
 })
 
 local FarmingSection = GeneralTab:CreateSection({
-    Name = "Farming",
+    Name = "Farming Mobs",
     Side = "Left",
 })
+
+_G.AutoKillDemons = false
+_G.AutoKillSlayers = false
+_G.ShowHitboxs = false
+
+_G.Tools = {}
+_G.CurrentTool = nil
+
+function ShowAllHitbox()
+    if _G.ShowHitboxs == true then
+        for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
+            if v:FindFirstChild("HumanoidRootPart") then
+                v.HumanoidRootPart.Transparency = 0.5
+            end
+        end
+    else
+        for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
+            if v:FindFirstChild("HumanoidRootPart") then
+                v.HumanoidRootPart.Transparency = 1
+            end
+        end
+    end
+end
+
+_G.Enemy = nil
 
 function AutoDemons()
     while _G.AutoKillDemons == true do
         wait()
 
+        if _G.Enemy == nil then
+            
+            for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
+                if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
+                    _G.Enemy = v
+                    v.HumanoidRootPart.Size = Vector3.new(99,99,99)
+                    TeleportTween(v.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0))
+                    if _G.CurrentTool:FindFirstChild("RemoteEvent") then
+                        _G.CurrentTool.RemoteEvent:FireServer()
+                    end
+                end
+            end
 
+        else
+
+            repeat
+                wait()
+            until _G.Enemy == nil or _G.Enemy.Humanoid.Health <= 0
+
+            for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
+                if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
+                    _G.Enemy = v
+                    v.HumanoidRootPart.Size = Vector3.new(99,99,99)
+                    TeleportTween(v.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0))
+                    if _G.CurrentTool:FindFirstChild("RemoteEvent") then
+                        _G.CurrentTool.RemoteEvent:FireServer()
+                    end
+                end
+            end
+
+        end
     end
 end
-
-_G.AutoKillDemons = false
-_G.AutoKillSlayers = false
-
-_G.Tools = {}
-_G.CurrentTool = nil
 
 spawn(function()
     for i, v in pairs(player.Backpack:GetChildren()) do
@@ -168,9 +217,10 @@ FarmingSection:AddSearchBox({
     Callback = function(NewValue, LastValue)
         _G.CurrentTool = NewValue
         if player.Backpack:FindFirstChild(NewValue) then
+            _G.CurrentTool = player.Backpack:WaitForChild(NewValue)
             humanoid:EquipTool(player.Backpack:WaitForChild(NewValue))
         elseif player.Character:FindFirstChild(NewValue) then
-            print("already equipped!")
+            _G.CurrentTool = player.Character:WaitForChild(NewValue)
         end
     end
 })
@@ -193,8 +243,41 @@ FarmingSection:AddToggle({
     end
 })
 
+FarmingSection:AddToggle({
+    Name = "Show Hitboxs?",
+    Flag = "FarmingSection_ShowHitbox",
+    Keybind = 1,
+    Callback = function(NewValue, OldValue)
+        _G.ShowHitboxs = NewValue
+    end
+})
+
 local TycoonSection = GeneralTab:CreateSection({
     Name = "Tycoon",
     Side = "Right",
 })
 
+_G.Tycoons = {}
+_G.Tycoon = nil
+
+spawn(function()
+    for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
+        if not table.find(_G.Tycoons, v.Name) then
+            table.insert(_G.Tycoons, v.Name)
+        end
+    end
+end)
+
+TycoonSection:AddSearchBox({
+    Name = "Teleport To Tycoon",
+    Value = "Combat",
+    List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
+    Flag = "TycoonSection_TycoonTeleport",
+    Callback = function(NewValue, LastValue)
+        if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
+            _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
+            if currentTween then currentTween:Cancel() currentTween = nil end
+            TeleportTween(CFrame.new(_G.Tycoon.Entrance.TouchModel.Head.Position))
+        end
+    end
+})
