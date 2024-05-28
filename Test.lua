@@ -271,11 +271,25 @@ spawn(function()
 end)
 
 TycoonSection:AddSearchBox({
-    Name = "Teleport To Tycoon",
+    Name = "Teleport To Tycoon (Slayers)",
     Value = "...",
     List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
     Flag = "TycoonSection_TycoonTeleport",
     Callback = function(NewValue, LastValue)
+        if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
+            _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
+            TeleportTween(_G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10))
+        end
+    end
+})
+
+TycoonSection:AddSearchBox({
+    Name = "Teleport To Tycoon (Demons)",
+    Value = "...",
+    List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
+    Flag = "TycoonSection_TycoonTeleport",
+    Callback = function(NewValue, LastValue)
+        NewValue = NewValue .. "."
         if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
             _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
             TeleportTween(_G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10))
