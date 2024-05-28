@@ -278,7 +278,7 @@ TycoonSection:AddSearchBox({
     Callback = function(NewValue, LastValue)
         if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
             _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
-            TeleportTween(CFrame.new(_G.Tycoon.Entrance.TouchModel.Head.Position))
+            TeleportTween(_G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10))
         end
     end
 })
