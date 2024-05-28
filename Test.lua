@@ -231,6 +231,7 @@ FarmingSection:AddToggle({
     Keybind = 1,
     Callback = function(NewValue, OldValue)
         _G.AutoKillDemons = NewValue
+        AutoDemons()
     end
 })
 
@@ -249,6 +250,7 @@ FarmingSection:AddToggle({
     Keybind = 1,
     Callback = function(NewValue, OldValue)
         _G.ShowHitboxs = NewValue
+        ShowAllHitbox()
     end
 })
 
@@ -270,13 +272,12 @@ end)
 
 TycoonSection:AddSearchBox({
     Name = "Teleport To Tycoon",
-    Value = "Combat",
+    Value = "...",
     List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
     Flag = "TycoonSection_TycoonTeleport",
     Callback = function(NewValue, LastValue)
         if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
             _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
-            if currentTween then currentTween:Cancel() currentTween = nil end
             TeleportTween(CFrame.new(_G.Tycoon.Entrance.TouchModel.Head.Position))
         end
     end
