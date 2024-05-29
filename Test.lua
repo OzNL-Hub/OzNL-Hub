@@ -145,39 +145,17 @@ function ShowAllHitbox()
     end
 end
 
-_G.Enemy = nil
-
 function AutoDemons()
     while _G.AutoKillDemons == true do
         wait()
 
         for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
-            if _G.Enemy == nil then
-                if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
-                    _G.Enemy = v
-                    repeat
-                        wait()
-                        v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
-                        game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
-                    until v.Humanoid.Health <= 1
-                    _G.Enemy = nil
-                end
-            else
+            if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
                 repeat
                     wait()
-                until _G.Enemy == nil or _G.Enemy.Humanoid.Health >= 1
-
-                if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
-                    _G.Enemy = v
-                    repeat
-                        wait()
-                        v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
-                        game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
-                    until v.Humanoid.Health <= 1
-                    _G.Enemy = nil
-                end
+                    HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
+                    game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
+                until v.Humanoid.Health <= 1
             end
         end
     end
@@ -328,7 +306,7 @@ function CutTrees()
     while _G.AutoCutTree == true do
         wait()
         for i, v in pairs(game:GetService("Workspace").Map:GetChildren()) do
-            if v:FindFirstChild("WoodHitPart") then
+            if v:FindFirstChild("WoodHitPart") and v:FindFirstChild("WoodCutScript") then
                 v.WoodHitPart.CanCollide = false
                 v.WoodHitPart.Transparency = 0
                 HumanoidRootPart.CFrame = v.WoodHitPart.CFrame
