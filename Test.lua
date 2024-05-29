@@ -133,6 +133,7 @@ function ShowAllHitbox()
         for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
             if v:FindFirstChild("HumanoidRootPart") then
                 v.HumanoidRootPart.Transparency = 0.5
+                v.HumanoidRootPart.Color = Color3.new(1,0,0)
             end
         end
     else
@@ -155,11 +156,13 @@ function AutoDemons()
             for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
                 if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
                     _G.Enemy = v
-                    v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                    TeleportTween(v.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0))
-                    if _G.CurrentTool:FindFirstChild("RemoteEvent") then
-                        _G.CurrentTool.RemoteEvent:FireServer()
-                    end
+                    repeat
+                        wait()
+                        v.HumanoidRootPart.Size = Vector3.new(99,99,99)
+                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0)
+                        game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
+                    until v.Humanoid.Health <= 1
+                    _G.Enemy = nil
                 end
             end
 
@@ -172,11 +175,13 @@ function AutoDemons()
             for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
                 if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
                     _G.Enemy = v
-                    v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                    TeleportTween(v.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0))
-                    if _G.CurrentTool:FindFirstChild("RemoteEvent") then
-                        _G.CurrentTool.RemoteEvent:FireServer()
-                    end
+                    repeat
+                        wait()
+                        v.HumanoidRootPart.Size = Vector3.new(99,99,99)
+                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0)
+                        game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
+                    until v.Humanoid.Health <= 1
+                    _G.Enemy = nil
                 end
             end
 
@@ -186,15 +191,19 @@ end
 
 spawn(function()
     for i, v in pairs(player.Backpack:GetChildren()) do
-        if not table.find(_G.Tools, v.Name) then
-            table.insert(_G.Tools, v.Name)
+        if v:IsA("Tool") then
+            if not table.find(_G.Tools, v.Name) then
+                table.insert(_G.Tools, v.Name)
+            end
         end
     end
 end)
 
 player.Backpack.ChildAdded:Connect(function(v)
-    if not table.find(_G.Tools, v.Name) then
-        table.insert(_G.Tools, v.Name)
+    if v:IsA("Tool") then
+        if not table.find(_G.Tools, v.Name) then
+            table.insert(_G.Tools, v.Name)
+        end
     end
 end)
 
@@ -202,8 +211,10 @@ player.Backpack.ChildRemoved:Connect(function()
     table.clear(_G.Tools)
     spawn(function()
         for i, v in pairs(player.Backpack:GetChildren()) do
-            if not table.find(_G.Tools, v.Name) then
-                table.insert(_G.Tools, v.Name)
+            if v:IsA("Tool") then
+                if not table.find(_G.Tools, v.Name) then
+                    table.insert(_G.Tools, v.Name)
+                end
             end
         end
     end)
@@ -225,24 +236,24 @@ FarmingSection:AddSearchBox({
     end
 })
 
-FarmingSection:AddToggle({
-    Name = "Auto Farm Demons",
-    Flag = "FarmingSection_AutoDemons",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.AutoKillDemons = NewValue
-        AutoDemons()
-    end
-})
+-- FarmingSection:AddToggle({
+--     Name = "Auto Farm Demons",
+--     Flag = "FarmingSection_AutoDemons",
+--     Keybind = 1,
+--     Callback = function(NewValue, OldValue)
+--         _G.AutoKillDemons = NewValue
+--         AutoDemons()
+--     end
+-- })
 
-FarmingSection:AddToggle({
-    Name = "Auto Farm Slayers",
-    Flag = "FarmingSection_AutoSlayers",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.AutoKillSlayers = NewValue
-    end
-})
+-- FarmingSection:AddToggle({
+--     Name = "Auto Farm Slayers",
+--     Flag = "FarmingSection_AutoSlayers",
+--     Keybind = 1,
+--     Callback = function(NewValue, OldValue)
+--         _G.AutoKillSlayers = NewValue
+--     end
+-- })
 
 FarmingSection:AddToggle({
     Name = "Show Hitboxs?",
@@ -259,40 +270,51 @@ local TycoonSection = GeneralTab:CreateSection({
     Side = "Right",
 })
 
-_G.Tycoons = {}
-_G.Tycoon = nil
+-- _G.Tycoons = {}
+-- _G.Tycoon = nil
 
-spawn(function()
-    for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
-        if not table.find(_G.Tycoons, v.Name) then
-            table.insert(_G.Tycoons, v.Name)
-        end
-    end
-end)
+-- spawn(function()
+--     for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
+--         if not table.find(_G.Tycoons, v.Name) then
+--             table.insert(_G.Tycoons, v.Name)
+--         end
+--     end
+-- end)
 
-TycoonSection:AddSearchBox({
-    Name = "Teleport To Tycoon (Slayers)",
-    Value = "...",
-    List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
-    Flag = "TycoonSection_TycoonTeleport",
-    Callback = function(NewValue, LastValue)
-        if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
-            _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
-            TeleportTween(_G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10))
+-- TycoonSection:AddSearchBox({
+--     Name = "Teleport To Tycoon",
+--     Value = "...",
+--     List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
+--     Flag = "TycoonSection_TycoonTeleport",
+--     Callback = function(NewValue, LastValue)
+--         if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
+--             _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
+--             HumanoidRootPart.CFrame = _G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10)
+--         end
+--     end
+-- })
+
+TycoonSection:AddButton({
+    Name = "Teleport To Tycoon",
+    Callback = function()
+        for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
+            if v.Owner.Value == player then
+               HumanoidRootPart.CFrame = v.Essentials.Spawn.CFrame
+            end
         end
     end
 })
 
-TycoonSection:AddSearchBox({
-    Name = "Teleport To Tycoon (Demons)",
-    Value = "...",
-    List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
-    Flag = "TycoonSection_TycoonTeleport",
-    Callback = function(NewValue, LastValue)
-        NewValue = NewValue .. "."
-        if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
-            _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
-            TeleportTween(_G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10))
-        end
+local FarmingTreeSection = GeneralTab:CreateSection({
+    Name = "Farming Trees",
+    Side = "Left",
+})
+
+FarmingTreeSection:AddToggle({
+    Name = "Auto Farm Trees",
+    Flag = "FarmingTreeSection_AutoFarmTrees",
+    Keybind = 1,
+    Callback = function(NewValue, OldValue)
+
     end
 })
