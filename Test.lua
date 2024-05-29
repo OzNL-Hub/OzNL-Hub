@@ -223,7 +223,7 @@ end)
 _G.EnableWeapon = true
 
 FarmingSection:AddSearchBox({
-    Name = "Choose Killing Weapon",
+    Name = "Auto Equip Choose",
     Value = "...",
     List = _G.Tools,
     Flag = "Farming_ChooseWeapon",
@@ -307,7 +307,7 @@ local TycoonSection = GeneralTab:CreateSection({
 -- })
 
 TycoonSection:AddButton({
-    Name = "Teleport To Tycoon",
+    Name = "Teleport To Your Tycoon",
     Callback = function()
         for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
             if v.Owner.Value == player then
@@ -317,13 +317,40 @@ TycoonSection:AddButton({
     end
 })
 
+_G.AutoUpgradeTycoon = false
+
+function AutoUpgrade()
+    while _G.AutoUpgradeTycoon == true do
+        wait()
+
+        for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
+            if v.Owner.Value == player then
+               for _, button in pairs(v.Buttons:GetChildren()) do
+                  if button:FindFirstChild("Head") then
+                    HumanoidRootPart.CFrame = button.Head.CFrame
+                  end
+               end
+            end
+        end
+    end
+end
+
+TycoonSection:AddToggle({
+    Name = "Auto Upgrade Tycoon",
+    Flag = "TycoonSection_UpgradeTycoon",
+    Keybind = 1,
+    Callback = function(NewValue, OldValue)
+        _G.AutoUpgradeTycoon = NewValue
+        AutoUpgrade()
+    end
+})
+
 local FarmingTreeSection = GeneralTab:CreateSection({
     Name = "Farming Trees",
     Side = "Left",
 })
 
 _G.AutoCutTree = false
-_G.CurrentTree = nil
 
 function CutTrees()
     while _G.AutoCutTree == true do
@@ -331,7 +358,7 @@ function CutTrees()
         for i, v in pairs(game:GetService("Workspace").Map:GetChildren()) do
             if v:FindFirstChild("WoodHitPart") then
                 v.WoodHitPart.CanCollide = false
-                v.WoodHitPart.Transparency = 1
+                v.WoodHitPart.Transparency = 0
                 v.WoodHitPart.Size = Vector3.new(9999,9999,9999)
                 v.WoodHitPart.CFrame = HumanoidRootPart.CFrame
                 game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
@@ -346,6 +373,11 @@ FarmingTreeSection:AddToggle({
     Keybind = 1,
     Callback = function(NewValue, OldValue)
         _G.AutoCutTree = NewValue
+        if _G.AutoCutTree == true then
+            _G.EnableWeapon = false
+        else
+            _G.EnableWeapon = true
+        end
         CutTrees()
     end
 })
