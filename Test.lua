@@ -159,7 +159,7 @@ function AutoDemons()
                     repeat
                         wait()
                         v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0)
+                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
                         game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
                     until v.Humanoid.Health <= 1
                     _G.Enemy = nil
@@ -178,7 +178,7 @@ function AutoDemons()
                     repeat
                         wait()
                         v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,5,0) * CFrame.Angles(0, math.rad(-90), 0)
+                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
                         game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
                     until v.Humanoid.Health <= 1
                     _G.Enemy = nil
@@ -220,6 +220,8 @@ player.Backpack.ChildRemoved:Connect(function()
     end)
 end)
 
+_G.EnableWeapon = true
+
 FarmingSection:AddSearchBox({
     Name = "Choose Killing Weapon",
     Value = "...",
@@ -229,31 +231,41 @@ FarmingSection:AddSearchBox({
         _G.CurrentTool = NewValue
         if player.Backpack:FindFirstChild(NewValue) then
             _G.CurrentTool = player.Backpack:WaitForChild(NewValue)
-            humanoid:EquipTool(player.Backpack:WaitForChild(NewValue))
         elseif player.Character:FindFirstChild(NewValue) then
             _G.CurrentTool = player.Character:WaitForChild(NewValue)
         end
     end
 })
 
--- FarmingSection:AddToggle({
---     Name = "Auto Farm Demons",
---     Flag = "FarmingSection_AutoDemons",
---     Keybind = 1,
---     Callback = function(NewValue, OldValue)
---         _G.AutoKillDemons = NewValue
---         AutoDemons()
---     end
--- })
+spawn(function()
+    while true do
+        wait()
+        if _G.EnableWeapon == true then
+            if _G.CurrentTool.Parent == player.Backpack then
+                humanoid:EquipTool(_G.CurrentTool)
+            end
+        end
+    end
+end)
 
--- FarmingSection:AddToggle({
---     Name = "Auto Farm Slayers",
---     Flag = "FarmingSection_AutoSlayers",
---     Keybind = 1,
---     Callback = function(NewValue, OldValue)
---         _G.AutoKillSlayers = NewValue
---     end
--- })
+FarmingSection:AddToggle({
+    Name = "Auto Farm Demons",
+    Flag = "FarmingSection_AutoDemons",
+    Keybind = 1,
+    Callback = function(NewValue, OldValue)
+        _G.AutoKillDemons = NewValue
+        AutoDemons()
+    end
+})
+
+FarmingSection:AddToggle({
+    Name = "Auto Farm Slayers",
+    Flag = "FarmingSection_AutoSlayers",
+    Keybind = 1,
+    Callback = function(NewValue, OldValue)
+        _G.AutoKillSlayers = NewValue
+    end
+})
 
 FarmingSection:AddToggle({
     Name = "Show Hitboxs?",
@@ -299,7 +311,7 @@ TycoonSection:AddButton({
     Callback = function()
         for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
             if v.Owner.Value == player then
-               HumanoidRootPart.CFrame = v.Essentials.Spawn.CFrame
+               HumanoidRootPart.CFrame = v.Essentials.Spawn.CFrame * CFrame.new(0,5,0)
             end
         end
     end
@@ -310,11 +322,30 @@ local FarmingTreeSection = GeneralTab:CreateSection({
     Side = "Left",
 })
 
+_G.AutoCutTree = false
+_G.CurrentTree = nil
+
+function CutTrees()
+    while _G.AutoCutTree == true do
+        wait()
+        for i, v in pairs(game:GetService("Workspace").Map:GetChildren()) do
+            if v:FindFirstChild("WoodHitPart") then
+                v.WoodHitPart.CanCollide = false
+                v.WoodHitPart.Transparency = 1
+                v.WoodHitPart.Size = Vector3.new(9999,9999,9999)
+                v.WoodHitPart.CFrame = HumanoidRootPart.CFrame
+                game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
+            end
+        end
+    end
+end
+
 FarmingTreeSection:AddToggle({
     Name = "Auto Farm Trees",
     Flag = "FarmingTreeSection_AutoFarmTrees",
     Keybind = 1,
     Callback = function(NewValue, OldValue)
-
+        _G.AutoCutTree = NewValue
+        CutTrees()
     end
 })
