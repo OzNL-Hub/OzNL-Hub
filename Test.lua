@@ -151,9 +151,23 @@ function AutoDemons()
     while _G.AutoKillDemons == true do
         wait()
 
-        if _G.Enemy == nil then
-            
-            for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
+        for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
+            if _G.Enemy == nil then
+                if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
+                    _G.Enemy = v
+                    repeat
+                        wait()
+                        v.HumanoidRootPart.Size = Vector3.new(99,99,99)
+                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
+                        game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
+                    until v.Humanoid.Health <= 1
+                    _G.Enemy = nil
+                end
+            else
+                repeat
+                    wait()
+                until _G.Enemy == nil or _G.Enemy.Humanoid.Health >= 1
+
                 if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
                     _G.Enemy = v
                     repeat
@@ -165,26 +179,6 @@ function AutoDemons()
                     _G.Enemy = nil
                 end
             end
-
-        else
-
-            repeat
-                wait()
-            until _G.Enemy == nil or _G.Enemy.Humanoid.Health <= 0
-
-            for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
-                if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
-                    _G.Enemy = v
-                    repeat
-                        wait()
-                        v.HumanoidRootPart.Size = Vector3.new(99,99,99)
-                        HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
-                        game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
-                    until v.Humanoid.Health <= 1
-                    _G.Enemy = nil
-                end
-            end
-
         end
     end
 end
@@ -282,30 +276,6 @@ local TycoonSection = GeneralTab:CreateSection({
     Side = "Right",
 })
 
--- _G.Tycoons = {}
--- _G.Tycoon = nil
-
--- spawn(function()
---     for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
---         if not table.find(_G.Tycoons, v.Name) then
---             table.insert(_G.Tycoons, v.Name)
---         end
---     end
--- end)
-
--- TycoonSection:AddSearchBox({
---     Name = "Teleport To Tycoon",
---     Value = "...",
---     List = game:GetService("Workspace").TycoonSets.Tycoons:GetChildren(),
---     Flag = "TycoonSection_TycoonTeleport",
---     Callback = function(NewValue, LastValue)
---         if game:GetService("Workspace").TycoonSets.Tycoons:FindFirstChild(NewValue) then
---             _G.Tycoon = game:GetService("Workspace").TycoonSets.Tycoons:WaitForChild(NewValue)
---             HumanoidRootPart.CFrame = _G.Tycoon.Entrance.TouchModel.Head.CFrame * CFrame.new(0,0-10)
---         end
---     end
--- })
-
 TycoonSection:AddButton({
     Name = "Teleport To Your Tycoon",
     Callback = function()
@@ -327,7 +297,9 @@ function AutoUpgrade()
             if v.Owner.Value == player then
                for _, button in pairs(v.Buttons:GetChildren()) do
                   if button:FindFirstChild("Head") then
-                    HumanoidRootPart.CFrame = button.Head.CFrame
+                    if button.Transparency == 0 then
+                        HumanoidRootPart.CFrame = button.Head.CFrame
+                    end
                   end
                end
             end
@@ -359,8 +331,7 @@ function CutTrees()
             if v:FindFirstChild("WoodHitPart") then
                 v.WoodHitPart.CanCollide = false
                 v.WoodHitPart.Transparency = 0
-                v.WoodHitPart.Size = Vector3.new(9999,9999,9999)
-                v.WoodHitPart.CFrame = HumanoidRootPart.CFrame
+                HumanoidRootPart.CFrame = v.WoodHitPart.CFrame
                 game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
             end
         end
@@ -373,11 +344,6 @@ FarmingTreeSection:AddToggle({
     Keybind = 1,
     Callback = function(NewValue, OldValue)
         _G.AutoCutTree = NewValue
-        if _G.AutoCutTree == true then
-            _G.EnableWeapon = false
-        else
-            _G.EnableWeapon = true
-        end
         CutTrees()
     end
 })
