@@ -1,5 +1,11 @@
 -- SETUP
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Setup.lua"))()
+
+repeat
+  wait()
+until _G.iiiiiiiiiiiiiiiiiii == true
+
 local player = game.Players.LocalPlayer
 
 local character = player.Character
@@ -32,8 +38,7 @@ local TeamCheck = false;
 
 -- Important Values
 
-_G.TweenSpeed = 250
-local currentTween
+_G.TweenSpeed = 75
 
 -- Functions
 
@@ -45,50 +50,61 @@ game.Players.PlayerRemoving:Connect(function (plr)
     end
 end)
 
+-- Noclip
+local noclipE = false
+
+local function noclip()
+	for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+		if v:IsA("BasePart") and v.CanCollide == true then
+			v.CanCollide = false
+		end
+	end
+end
 
 -- Teleport
 
-function TeleportTween(dist, AdditionalCFrame)
-    if Player.Character:FindFirstChild("HumanoidRootPart") and Player.Character:FindFirstChild("Humanoid") then
-        if AdditionalCFrame then
-            local tweenInfo = TweenInfo.new((Player.Character:WaitForChild("HumanoidRootPart").Position - dist.Position).Magnitude / _G.TweenSpeed, Enum.EasingStyle.Linear)
-            currentTween = TweenService:Create(Player.Character:WaitForChild("HumanoidRootPart"), tweenInfo, {CFrame = dist * AdditionalCFrame})
-        else
-            local tweenInfo = TweenInfo.new((Player.Character:WaitForChild("HumanoidRootPart").Position - dist.Position).Magnitude / _G.TweenSpeed, Enum.EasingStyle.Linear)
-            currentTween = TweenService:Create(Player.Character:WaitForChild("HumanoidRootPart"), tweenInfo, {CFrame = dist})
-        end
+local function moveto(obj)
+    local info = TweenInfo.new(((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude) / _G.TweenSpeed, Enum.EasingStyle.Linear)
+    local tween = TweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, info, {CFrame = obj})
 
-        local Noclip = nil
-        local Clip = nil
-        
-        function noclip()
-            Clip = false
-            local function Nocl()
-                if Clip == false and game.Players.LocalPlayer.Character ~= nil then
-                    for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                        if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
-                            v.CanCollide = false
-                        end
-                    end
-                end
-                wait(0.21) -- basic optimization
-            end
-            Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
-        end
-        
-        function clip()
-            if Noclip then Noclip:Disconnect() end
-            Clip = true
-        end
-        
-        noclip() -- to toggle noclip() and clip()
-
-        currentTween:Play()
-        currentTween.Completed:Wait()
-        currentTween = nil
-
-        clip()
+    if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyVelocity") then
+        noclipE = game:GetService("RunService").Stepped:Connect(noclip)
+        tween:Play()
     end
+        
+    tween.Completed:Connect(function()
+        noclipE:Disconnect()
+    end)
+end
+
+-- Mobs
+
+local function getMob()
+    local dist, mob = math.huge
+    for i,v in pairs(workspace:GetChildren()) do
+        if v:IsA("Model") and v.Name == _G.Mob then
+            local get_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:GetModelCFrame().p).magnitude
+            if get_mag < dist then
+                dist = get_mag
+                mob = v
+            end
+        end
+    end
+    return mob
+end
+
+local function getBoss()
+    local dist, mob = math.huge
+    for i,v in pairs(workspace:GetChildren()) do
+        if v:IsA("Model") and v.Name == _G.Boss then
+            local get_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:GetModelCFrame().p).magnitude
+            if get_mag < dist then
+                dist = get_mag
+                mob = v
+            end
+        end
+    end
+    return mob
 end
 
 -- Random
@@ -98,6 +114,55 @@ function FireButton(x)
         v:Function()
     end
 end
+
+
+-- Auto Farm Function
+
+task.spawn(function()
+    while task.wait() do
+        if _G.AutoMob == true then
+            pcall(function()
+                local enemy_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+
+                if not getMob():FindFirstChild("Executed") then
+                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), tonumber(_G.TweenSpeed))
+                end
+
+                if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Blade") then
+                    if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Equipped").Part0 == nil then
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "R", false, game)
+                    end
+                end
+
+                if getMob():FindFirstChild("Executed") then
+                    wait(1)
+                    getMob():Destroy()
+                end
+
+                if getMob():FindFirstChild("Down") then
+                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), tonumber(_G.TweenSpeed))
+                    game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
+                end
+
+                for Index, Value in next, Player.Character:GetChildren() do
+                    if Value.Name == "Stun" or Value.Name == "SequenceCooldown" or Value.Name == "HeavyCooldown" or Value.Name == "Sequence" or Value.Name == "SequenceFactor" then 
+                        Value:Destroy()
+                    end
+                end
+
+                if enemy_mag <= 10 then
+                    if getMob():FindFirstChild("Block") then
+                        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Katana", "Heavy")
+                    else
+                        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Katana", "Server")
+                    end
+
+                end
+
+            end)
+        end
+    end
+end)
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Library.lua"))()
 local Wait = library.subs.Wait -- Only returns if the GUI has not been terminated. For 'while Wait() do' loops
@@ -117,211 +182,183 @@ local GeneralTab = PepsisWorld:CreateTab({
 })
 
 local FarmingSection = GeneralTab:CreateSection({
-    Name = "Farming Mobs",
-    Side = "Left",
+    Name = "Farming"
 })
 
-_G.AutoKillDemons = false
-_G.AutoKillSlayers = false
-_G.ShowHitboxs = false
+local mob_list = {
+    -- Demon List
+    "Green Demon",
+    "GenericOni",
+    "FrostyOni",
+    "Blue Demon",
+    "SlayerBoss",
 
-_G.Tools = {}
-_G.CurrentTool = nil
+    -- Slayer List
+    "GenericSlayer",
+    "Zenitsu",
+}
 
-function ShowAllHitbox()
-    if _G.ShowHitboxs == true then
-        for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
-            if v:FindFirstChild("HumanoidRootPart") then
-                v.HumanoidRootPart.Transparency = 0.5
-                v.HumanoidRootPart.Color = Color3.new(1,0,0)
-            end
-        end
-    else
-        for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
-            if v:FindFirstChild("HumanoidRootPart") then
-                v.HumanoidRootPart.Transparency = 1
-            end
-        end
-    end
-end
+local boss_list = {
+    "Okuro",
+    "Rui",
+    "Lower Moon 2",
+    "Lower Moon 3",
+    "Akaza",
+    "Doma",
+    "Kokushibo",
+    "Kaigaku",
+    "Gyutaro",
+}
 
-function AutoDemons()
-    while _G.AutoKillDemons == true do
-        wait()
-
-        for i, v in pairs(game:GetService("Workspace").MobsHolder:GetChildren()) do
-            if v:FindFirstChild("HumanoidRootPart") and v:WaitForChild("Humanoid").Health >= 1 then
-                repeat
-                    wait()
-                    HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
-                    game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
-                until v.Humanoid.Health <= 1
-            end
-        end
-    end
-end
-
-spawn(function()
-    for i, v in pairs(player.Backpack:GetChildren()) do
-        if v:IsA("Tool") then
-            if not table.find(_G.Tools, v.Name) then
-                table.insert(_G.Tools, v.Name)
-            end
-        end
-    end
-end)
-
-player.Backpack.ChildAdded:Connect(function(v)
-    if v:IsA("Tool") then
-        if not table.find(_G.Tools, v.Name) then
-            table.insert(_G.Tools, v.Name)
-        end
-    end
-end)
-
-player.Backpack.ChildRemoved:Connect(function()
-    table.clear(_G.Tools)
-    spawn(function()
-        for i, v in pairs(player.Backpack:GetChildren()) do
-            if v:IsA("Tool") then
-                if not table.find(_G.Tools, v.Name) then
-                    table.insert(_G.Tools, v.Name)
-                end
-            end
-        end
-    end)
-end)
-
-_G.EnableWeapon = true
-
+_G.Mob = "Green Demon"
 FarmingSection:AddSearchBox({
-    Name = "Auto Equip Choose",
-    Value = "...",
-    List = _G.Tools,
-    Flag = "Farming_ChooseWeapon",
+    Name = "Select Mob",
+    Value = _G.Mob,
+    List = mob_list,
+    Flag = "FarmingSection_SelectMob",
     Callback = function(NewValue, LastValue)
-        _G.CurrentTool = NewValue
-        if player.Backpack:FindFirstChild(NewValue) then
-            _G.CurrentTool = player.Backpack:WaitForChild(NewValue)
-        elseif player.Character:FindFirstChild(NewValue) then
-            _G.CurrentTool = player.Character:WaitForChild(NewValue)
-        end
+        _G.Mob = NewValue
     end
 })
 
-spawn(function()
-    while true do
-        wait()
-        if _G.EnableWeapon == true then
-            if _G.CurrentTool.Parent == player.Backpack then
-                humanoid:EquipTool(_G.CurrentTool)
-            end
+_G.AutoMob = false
+FarmingSection:AddToggle({
+    Name = "Auto Mob",
+    Flag = "FarmingSection_AutoMob",
+    Callback = function(NewValue, OldValue)
+        _G.AutoMob = NewValue
+    end
+})
+
+_G.Boss = "Okuro"
+FarmingSection:AddSearchBox({
+    Name = "Select Boss",
+    Value = _G.Boss,
+    List = boss_list,
+    Flag = "FarmingSection_SelectBoss",
+    Callback = function(NewValue, LastValue)
+        _G.Boss = NewValue
+    end
+})
+
+_G.AutoBoss = false
+FarmingSection:AddToggle({
+    Name = "Auto Boss",
+    Flag = "FarmingSection_AutoBoss",
+    Callback = function(NewValue, OldValue)
+        _G.AutoBoss = NewValue
+    end
+})
+
+local MiscellaneousSection = GeneralTab:CreateSection({
+    Name = "Miscellaneous",
+    Side = "Right"
+})
+
+_G.PickupAura = false
+MiscellaneousSection:AddToggle({
+    Name = "Pickup-Aura",
+    Flag = "MiscellaneousSection_PickupAura",
+    Callback = function(NewValue, OldValue)
+        _G.PickupAura = NewValue
+    end
+})
+
+task.spawn(function()
+    while task.wait() do
+        if _G.PickupAura == true then
+            pcall(function()
+                for i,v in pairs(workspace:GetChildren()) do
+                    if v.Name == "DropItem" then
+                        local partmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude
+                        if partmag < 20 then
+                            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Interaction", v)
+                        end
+                    end
+                end
+            end)
         end
     end
 end)
 
-FarmingSection:AddToggle({
-    Name = "Auto Farm Demons",
-    Flag = "FarmingSection_AutoDemons",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.AutoKillDemons = NewValue
-        AutoDemons()
-    end
-})
-
-FarmingSection:AddToggle({
-    Name = "Auto Farm Slayers",
-    Flag = "FarmingSection_AutoSlayers",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.AutoKillSlayers = NewValue
-    end
-})
-
-FarmingSection:AddToggle({
-    Name = "Show Hitboxs?",
-    Flag = "FarmingSection_ShowHitbox",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.ShowHitboxs = NewValue
-        ShowAllHitbox()
-    end
-})
-
-local TycoonSection = GeneralTab:CreateSection({
-    Name = "Tycoon",
-    Side = "Right",
-})
-
-TycoonSection:AddButton({
-    Name = "Teleport To Your Tycoon",
+MiscellaneousSection:AddButton({
+    Name = "Godmode",
     Callback = function()
-        for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
-            if v.Owner.Value == player then
-               HumanoidRootPart.CFrame = v.Essentials.Spawn.CFrame * CFrame.new(0,5,0)
-            end
-        end
+        pcall(function()
+            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 0/0)
+        end)
     end
 })
 
-_G.AutoUpgradeTycoon = false
+MiscellaneousSection:AddButton({
+    Name = "Normal Health (Kill you)",
+    Callback = function()
+        pcall(function()
+            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 9999999999999999999999999999)
+        end)
+    end
+})
 
-function AutoUpgrade()
-    while _G.AutoUpgradeTycoon == true do
-        wait()
+local TeleportsSection = GeneralTab:CreateSection({
+    Name = "Teleports",
+    Side = "Left"
+})
 
-        for i, v in pairs(game:GetService("Workspace").TycoonSets.Tycoons:GetChildren()) do
-            if v.Owner.Value == player then
-               for _, button in pairs(v.Buttons:GetChildren()) do
-                  if button:FindFirstChild("Head") then
-                    if button.Transparency == 0 then
-                        HumanoidRootPart.CFrame = button.Head.CFrame
-                    end
-                  end
-               end
-            end
-        end
+local breath_style = {
+    ["SunBreath"] = "Tanjiro",
+    ["MoonBreath"] = "Kokushibo",
+    ["WaterBreath"] = "Urokodaki",
+    ["ThunderBreath"] = "Kujima",
+    ["FlameBreath"] = "Rengoku",
+    ["WindBreath"] = "Grimm",
+    ["MistBreath"] = "Tokito",
+    ["InsectBreath"] = "Shinobu",
+    ["SoundBreath"] = "Uzui",
+}
+
+_G.BreathingStyle = "Tanjiro"
+TeleportsSection:AddSearchBox({
+    Name = "Select Breath Style",
+    Value = "Sun Breathing",
+    List = breath_style,
+    Flag = "TeleportsSection_BreathingStyle",
+    Callback = function(NewValue, LastValue)
+        _G.BreathingStyle = NewValue
+    end
+})
+
+TeleportsSection:AddButton({
+    Name = "To Breath",
+    Callback = function()
+        pcall(function()
+            moveto(workspace.Npcs:FindFirstChild(_G.BreathingStyle):GetModelCFrame(), tonumber(_G.TweenSpeed))
+        end)
+    end
+})
+
+local npc_list = {}
+for i,v in pairs(workspace.Npcs:GetChildren()) do
+    if v:IsA("Model") and not table.find(npc_list, v.Name) then
+        table.insert(npc_list, v.Name)
     end
 end
 
-TycoonSection:AddToggle({
-    Name = "Auto Upgrade Tycoon",
-    Flag = "TycoonSection_UpgradeTycoon",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.AutoUpgradeTycoon = NewValue
-        AutoUpgrade()
+_G.NPC = "Tanjiro"
+TeleportsSection:AddSearchBox({
+    Name = "Select NPC",
+    Value = _G.NPC,
+    List = npc_list,
+    Flag = "TeleportsSection_SelectNPC",
+    Callback = function(NewValue, LastValue)
+        _G.NPC = NewValue
     end
 })
 
-local FarmingTreeSection = GeneralTab:CreateSection({
-    Name = "Farming Trees",
-    Side = "Left",
-})
-
-_G.AutoCutTree = false
-
-function CutTrees()
-    while _G.AutoCutTree == true do
-        wait()
-        for i, v in pairs(game:GetService("Workspace").Map:GetChildren()) do
-            if v:FindFirstChild("WoodHitPart") and v:FindFirstChild("WoodCutScript") then
-                v.WoodHitPart.CanCollide = false
-                v.WoodHitPart.Transparency = 0
-                HumanoidRootPart.CFrame = v.WoodHitPart.CFrame
-                game:GetService("Players").LocalPlayer:WaitForChild("Attack"):FireServer()
-            end
-        end
+TeleportsSection:AddButton({
+    Name = "To NPC",
+    Callback = function()
+        pcall(function()
+            moveto(workspace.Npcs:FindFirstChild(_G.NPC):GetModelCFrame(), tonumber(_G.TweenSpeed))
+        end)
     end
-end
-
-FarmingTreeSection:AddToggle({
-    Name = "Auto Farm Trees",
-    Flag = "FarmingTreeSection_AutoFarmTrees",
-    Keybind = 1,
-    Callback = function(NewValue, OldValue)
-        _G.AutoCutTree = NewValue
-        CutTrees()
-    end
-})
+}) 
