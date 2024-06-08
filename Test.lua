@@ -1,5 +1,11 @@
 -- SETUP
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Setup.lua"))()
+
+repeat
+  wait()
+until _G.iiiiiiiiiiiiiiiiiii == true
+
 local player = game.Players.LocalPlayer
 
 local character = player.Character
@@ -30,10 +36,6 @@ local ChamsColor, RainbowChams = Color3.fromRGB(255, 255, 255), false;
 local Nametags = false;
 local TeamCheck = false;
 
--- Important Values
-
-_G.TweenSpeed = 75
-
 -- Functions
 
 -- when kicked auto rejoin
@@ -57,19 +59,44 @@ end
 
 -- Teleport
 
+_G.TweenSpeed = 250
+_G.TweenSpeed2 = 500
+local antifall = nil
+
 local function moveto(obj)
-    local info = TweenInfo.new(((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude) / _G.TweenSpeed, Enum.EasingStyle.Linear)
+    local info = TweenInfo.new(((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude)/ _G.TweenSpeed, Enum.EasingStyle.Linear)
     local tween = TweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, info, {CFrame = obj})
 
     if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyVelocity") then
+        antifall = Instance.new("BodyVelocity", game.Players.LocalPlayer.Character.HumanoidRootPart)
+        antifall.Velocity = Vector3.new(0,0,0)
         noclipE = game:GetService("RunService").Stepped:Connect(noclip)
         tween:Play()
     end
         
     tween.Completed:Connect(function()
+        antifall:Destroy()
         noclipE:Disconnect()
     end)
 end
+
+local function m2oveto(obj)
+    local info = TweenInfo.new(((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude)/ _G.TweenSpeed2, Enum.EasingStyle.Linear)
+    local tween = TweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, info, {CFrame = obj})
+
+    if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyVelocity") then
+        antifall = Instance.new("BodyVelocity", game.Players.LocalPlayer.Character.HumanoidRootPart)
+        antifall.Velocity = Vector3.new(0,0,0)
+        noclipE = game:GetService("RunService").Stepped:Connect(noclip)
+        tween:Play()
+    end
+        
+    tween.Completed:Connect(function()
+        antifall:Destroy()
+        noclipE:Disconnect()
+    end)
+end
+
 
 -- Mobs
 
@@ -109,7 +136,6 @@ function FireButton(x)
     end
 end
 
-
 -- Auto Farm Function
 
 task.spawn(function()
@@ -130,7 +156,7 @@ task.spawn(function()
 
                 if getMob():FindFirstChild("Executed") then
                     wait(1)
-                    getMob():Destroy()
+                    -- getMob():Destroy()
                 end
 
                 if getMob():FindFirstChild("Down") then
@@ -146,6 +172,46 @@ task.spawn(function()
 
                 if enemy_mag <= 10 then
                     if getMob():FindFirstChild("Block") then
+                        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Katana", "Heavy")
+                    else
+                        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Katana", "Server")
+                    end
+
+                end
+
+            end)
+        elseif _G.AutoBoss == true then
+            pcall(function()
+                local enemy_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getBoss():GetModelCFrame().p).magnitude
+
+                if not getBoss():FindFirstChild("Executed") then
+                    moveto(getBoss():GetModelCFrame() * CFrame.new(0,0,3), tonumber(_G.TweenSpeed))
+                end
+
+                if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Blade") then
+                    if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Equipped").Part0 == nil then
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "R", false, game)
+                    end
+                end
+
+                if getBoss():FindFirstChild("Executed") then
+                    wait(1)
+                    getBoss():Destroy()
+                end
+
+                if getBoss():FindFirstChild("Down") then
+                    moveto(getBoss():GetModelCFrame() * CFrame.new(0,0,3), tonumber(_G.TweenSpeed))
+                    game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
+                end
+
+                for Index, Value in next, Player.Character:GetChildren() do
+                    if Value.Name == "Stun" or Value.Name == "SequenceCooldown" or Value.Name == "HeavyCooldown" or Value.Name == "Sequence" or Value.Name == "SequenceFactor" then 
+                        Value:Destroy()
+                    end
+                end
+
+                if enemy_mag <= 10 then
+                    if getBoss():FindFirstChild("Block") then
                         game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Katana", "Heavy")
                     else
                         game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Katana", "Server")
@@ -249,6 +315,212 @@ local MiscellaneousSection = GeneralTab:CreateSection({
     Side = "Right"
 })
 
+local trinket_list2 = {
+    "Ancient Coin",
+    "Bronze Jar",
+    "Copper Goblet",
+    "Gold Crown",
+    "Gold Goblet",
+    "Gold Jar",
+    "Golden Ring",
+    "Green Jewel",
+    "Perfect Crystal",
+    "Red Jewel",
+    "Rusty Goblet",
+    "Silver Goblet",
+    "Silver Jar",
+    "Silver Ring",
+}
+local Trinket_list = {}
+for i, v in pairs(trinket_list2) do
+    table.insert(Trinket_list, v)
+end
+
+_G.TrinketFarm = false
+MiscellaneousSection:AddToggle({
+    Name = "Trinket Farm",
+    Flag = "MiscellaneousSection_TrinketFarm",
+    Callback = function(NewValue, OldValue)
+        _G.TrinketFarm = NewValue
+    end
+})
+
+local function getTrinket()
+    local dist, trin = math.huge
+    for i,v in pairs(workspace:GetChildren()) do
+        if v:IsA("Model") and v:FindFirstChild("PickableItem") then
+            if v.Name == "Perfect Crystal" or v.Name == "Green Jewel" or v.Name == "Red Jewel" then
+                local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:GetModelCFrame().p).magnitude
+                if mag < dist then
+                    dist = mag
+                    trin = v
+                end
+            else
+                local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:GetModelCFrame().p).magnitude
+                if mag < dist then
+                    dist = mag
+                    trin = v
+                end
+            end
+        end
+    end
+    return trin
+end
+
+spawn(function()
+    while wait() do
+        if _G.TrinketFarm == true then
+            local trinmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getTrinket():GetModelCFrame().p).magnitude
+            if trinmag <= 20 then
+                for i,v in pairs(workspace:GetChildren()) do
+                    if v:IsA("Model") and v:FindFirstChild("PickableItem") and v:FindFirstChild("Part") then
+                        local partmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("Part").Position).magnitude 
+                        if partmag < 20 then
+                            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Interaction", v.Part)
+                        end
+                    end
+                end
+            else
+                moveto(getTrinket():GetModelCFrame() * CFrame.new(0,0,0))
+            end
+        end
+    end
+end)
+
+_G.RareFarm = false
+MiscellaneousSection:AddToggle({
+    Name = "Epic Trinket Farm",
+    Flag = "MiscellaneousSection_RareTrinketFarm",
+    Callback = function(NewValue, OldValue)
+        _G.RareFarm = NewValue
+    end
+})
+
+local function GetEpicTrinket()
+    local tri
+    for i, v in pairs(game.Workspace:GetChildren()) do
+        if v.Name == "Perfect Crystal" or v.Name == "Green Jewel" or v.Name == "Red Jewel" then
+            if v:IsA("Model") and v:FindFirstChild("PickableItem") then
+               tri = v
+            end
+        end
+    end
+    return tri
+end
+
+spawn(function()
+    while wait() do
+        if _G.RareFarm == true then
+            local part = GetEpicTrinket()
+            if part then
+                local trinmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part:GetModelCFrame().p).magnitude
+                if trinmag <= 20 then
+                    for i,v in pairs(workspace:GetChildren()) do
+                        if v:IsA("Model") and v:FindFirstChild("PickableItem") then
+                            if v:FindFirstChild("Part") then
+                                local partmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("Part").Position).magnitude 
+                                if partmag < 20 then
+                                    game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Interaction", v.Part)
+                                end
+                            elseif v:FindFirstChild("Main") then
+                                local partmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("Main").Position).magnitude 
+                                if partmag < 20 then
+                                    game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Interaction", v.Main)
+                                end
+                            end
+
+                        end
+                    end
+                else
+                    moveto(part:GetModelCFrame() * CFrame.new(0,0,0))
+                end
+            end
+        end
+    end
+end)
+
+-- _G.SmartTrinketFarm = false
+-- _G.TimeToSell = false
+-- MiscellaneousSection:AddToggle({
+--     Name = "Smart Trinket Farm",
+--     Flag = "MiscellaneousSection_TrinketFarm",
+--     Callback = function(NewValue, OldValue)
+--         _G.SmartTrinketFarm = NewValue
+--     end
+-- })
+
+-- spawn(function()
+--     while wait() do
+--         if _G.SmartTrinketFarm == true and _G.TimeToSell == false then
+--             local trinmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getTrinket():GetModelCFrame().p).magnitude
+--             if trinmag <= 20 then
+--                 for i,v in pairs(workspace:GetChildren()) do
+--                     if v:IsA("Model") and v:FindFirstChild("PickableItem") and v:FindFirstChild("Part") then
+--                         local partmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("Part").Position).magnitude 
+--                         if partmag < 20 then
+--                             game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Interaction", v.Part)
+--                         end
+--                     end
+--                 end
+--             else
+--                 moveto(getTrinket():GetModelCFrame() * CFrame.new(0,0,0))
+--             end
+--         elseif _G.SmartTrinketFarm == true and _G.TimeToSell == true then
+--             local market = game.Workspace.Npcs:FindFirstChild("Merchant")
+--             if market then
+--                 moveto(market:GetModelCFrame())
+--                 if (player.Character.HumanoidRootPart.Position - market.HumanoidRootPart.Position).Magnitude < 20 then
+
+--                     wait(2)
+
+--                     local args = {
+--                         [1] = "Dialogue",
+--                         [2] = "Prompt",
+--                         [3] = market
+--                     }
+                    
+--                     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Sync"):InvokeServer(unpack(args))
+                    
+--                     wait(2)
+
+--                     local answer1 = "I want to sell all my trinkets"
+--                     for i, v in pairs(player.Character.Answers:GetChildren()) do
+--                         if v.Value == answer1 then
+--                             answer1 = v
+--                         end
+--                     end
+
+--                     local args1 = {
+--                         [1] = "Dialogue",
+--                         [2] = "Answer",
+--                         [3] = answer1.Value,
+--                         [4] = "Merchant"
+--                     }
+
+--                     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Sync"):InvokeServer(unpack(args1))
+
+--                     wait(2)
+
+--                     _G.TimeToSell = false
+
+--                 end
+--             end
+--         end
+--     end
+-- end)
+
+-- spawn(function()
+--     while wait(30) do
+--         if _G.SmartTrinketFarm == true then
+--             if _G.TimeToSell == false then
+--                 _G.TimeToSell = true
+--             elseif _G.TimeToSell == true then
+--                 _G.TimeToSell = false
+--             end
+--         end
+--     end
+-- end)
+
 _G.PickupAura = false
 MiscellaneousSection:AddToggle({
     Name = "Pickup-Aura",
@@ -275,9 +547,49 @@ task.spawn(function()
     end
 end)
 
+_G.AutoBreath = false
+MiscellaneousSection:AddToggle({
+    Name = "Auto Breath",
+    Flag = "FarmingSection_AutoBreath",
+    Callback = function(NewValue, OldValue)
+        _G.AutoBreath = NewValue
+        if NewValue == false then
+            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Breath", false)
+        end
+    end
+})
+
+spawn(function()
+    while wait() do
+        if _G.AutoBreath == true then
+            if game.Players.LocalPlayer.Character:FindFirstChild("Busy") then
+                game.Players.LocalPlayer.Character:FindFirstChild("Busy"):Destroy()
+            end
+
+            if game.Players.LocalPlayer.Character:FindFirstChild("Slow") then 
+                game.Players.LocalPlayer.Character:FindFirstChild("Slow"):Destroy()
+            end
+        end
+    end
+end)
+
+spawn(function()
+    while wait() do
+        if _G.AutoBreath == true then
+            if game:GetService("Players").LocalPlayer.Breathing.Value ~= 100 then 
+                game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Breath", true)
+                task.delay(2, function()
+                    game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Breath", false)
+                end)
+            end
+        end
+    end
+end)
+
 MiscellaneousSection:AddButton({
     Name = "Godmode",
     Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 0/0)
         pcall(function()
             game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 0/0)
         end)
@@ -285,7 +597,7 @@ MiscellaneousSection:AddButton({
 })
 
 MiscellaneousSection:AddButton({
-    Name = "Normal Health (Kill you)",
+    Name = "Normal Health (Kills you)",
     Callback = function()
         pcall(function()
             game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 9999999999999999999999999999)
@@ -299,15 +611,27 @@ local TeleportsSection = GeneralTab:CreateSection({
 })
 
 local breath_style = {
-    ["SunBreath"] = "Tanjiro",
-    ["MoonBreath"] = "Kokushibo",
-    ["WaterBreath"] = "Urokodaki",
-    ["ThunderBreath"] = "Kujima",
-    ["FlameBreath"] = "Rengoku",
-    ["WindBreath"] = "Grimm",
-    ["MistBreath"] = "Tokito",
-    ["InsectBreath"] = "Shinobu",
-    ["SoundBreath"] = "Uzui",
+    ["Tanjiro"] = "Sun Breath",
+    ["Kokushibo"] = "Moon Breath",
+    ["Urokodaki"] = "Water Breath",
+    ["Kujima"] = "Thunder Breath",
+    ["Rengoku"] = "Flame Breath",
+    ["Grimm"] = "Wind Breath",
+    ["Tokito"] = "Mist Breath",
+    ["Shinobu"] = "Insect Breath",
+    ["Uzui"] = "Sound Breath",
+}
+
+local breath_style2 = {
+    ["Sun Breath"] = "Tanjiro",
+    ["Moon Breath"] = "Kokushibo",
+    ["Water Breath"] = "Urokodaki",
+    ["Thunder Breath"] = "Kujima",
+    ["Flame Breath"] = "Rengoku",
+    ["Wind Breath"] = "Grimm",
+    ["Mist Breath"] = "Tokito",
+    ["Insect Breath"] = "Shinobu",
+    ["Sound Breath"] = "Uzui",
 }
 
 _G.BreathingStyle = "Tanjiro"
@@ -325,7 +649,7 @@ TeleportsSection:AddButton({
     Name = "To Breath",
     Callback = function()
         pcall(function()
-            moveto(workspace.Npcs:FindFirstChild(_G.BreathingStyle):GetModelCFrame(), tonumber(_G.TweenSpeed))
+            moveto(workspace.Npcs:FindFirstChild(breath_style2[_G.BreathingStyle]):GetModelCFrame(), tonumber(_G.TweenSpeed))
         end)
     end
 })
