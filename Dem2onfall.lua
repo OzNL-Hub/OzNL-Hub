@@ -1,4 +1,5 @@
 -- SETUP
+--
 
 local player = game.Players.LocalPlayer
 
@@ -613,17 +614,18 @@ spawn(function()
     end
 end)
 
-MiscellaneousSection:AddToggle({
+
+MiscellaneousSection:AddButton({
     Name = "Godmode",
-    Flag = "MiscellaneousSection_godmode",
-    Callback = function(NewValue, OldValue)
-        pcall(function()
-            if NewValue == true then
-                game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 0/0)
-            elseif NewValue == false and OldValue == true then
-                game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 999999999999999)
-            end
-        end)
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 0/0)
+    end
+})
+
+MiscellaneousSection:AddButton({
+    Name = "Normal Health (Kills you)",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 9999999999999)
     end
 })
 
