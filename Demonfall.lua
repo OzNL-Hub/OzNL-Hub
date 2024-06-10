@@ -1,11 +1,5 @@
 -- SETUP
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Setup.lua"))()
-
-repeat
-  wait()
-until _G.iiiiiiiiiiiiiiiiiii == true
-
 local player = game.Players.LocalPlayer
 
 local character = player.Character
