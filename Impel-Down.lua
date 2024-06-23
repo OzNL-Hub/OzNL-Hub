@@ -1,5 +1,4 @@
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Setup.lua"))()
-
-  repeat
-    wait()
-  until _G.Finished == true
+print("i will fuck gpo")
+print("i just need a new stack method")
+print("and then i can fuck gpo and pho everytime i want and smoothly🤤🤤")
+print("i would love to fuck pho everyday and everytime i want or need")
