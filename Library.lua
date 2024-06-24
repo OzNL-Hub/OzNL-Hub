@@ -461,8 +461,8 @@ Library v0.36 [
 ]
 ]]
 local library = {
-	Version = "0.36",
-	WorkspaceName = "Pepsi Lib",
+	Version = "0.1",
+	WorkspaceName = "OzNL HUB",
 	flags = {},
 	signals = {},
 	objects = {},
@@ -471,7 +471,7 @@ local library = {
 	subs = {},
 	colored = {},
 	configuration = {
-		hideKeybind = Enum.KeyCode.RightShift,
+		hideKeybind = Enum.KeyCode.LeftAlt,
 		smoothDragging = false,
 		easingStyle = Enum.EasingStyle.Quart,
 		easingDirection = Enum.EasingDirection.Out
