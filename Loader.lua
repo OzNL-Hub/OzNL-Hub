@@ -14,7 +14,7 @@ elseif game.PlaceId == 4855457388 or 5094651510 then -- Demonfall
 
   loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Demonfall.lua"))()
 
-elseif game.PlaceId == 11 then
+elseif game.PlaceId == 9224601490 then
 
   loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/FruitBattleGrounds.lua"))()
 
