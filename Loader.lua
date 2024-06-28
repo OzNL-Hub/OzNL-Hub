@@ -1,3 +1,4 @@
+--
 if game.PlaceId == 7465136166 then -- Second Sea GPO
 
   loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/GPO_SecondWorld.lua"))()
