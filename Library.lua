@@ -461,7 +461,7 @@ Library v0.36 [
 ]
 ]]
 local library = {
-	Version = "0.1",
+	Version = "0.67",
 	WorkspaceName = "OzNL HUB",
 	flags = {},
 	signals = {},
@@ -7351,7 +7351,7 @@ function library:CreateWindow(options, ...)
 			Flag = "__Designer.Background.WorkspaceProfile",
 			Flags = true,
 			Suffix = "Config",
-			Workspace = library.WorkspaceName or "Unnamed Workspace",
+			Workspace = library.WorkspaceName or "OzNL Workspace",
 			Desginer = true
 		}
 		local daaata = {{"AddTextbox", "__Designer.Textbox.ImageAssetID", backgroundsection, {
@@ -7682,4 +7682,17 @@ library.NewWindow = library.CreateWindow
 library.AddWindow = library.CreateWindow
 library.Window = library.CreateWindow
 library.W = library.CreateWindow
+
+task.wait(1)
+
+local savestuff = library.elements["__Designer.Background.WorkspaceProfile"]
+if savestuff then
+    library.LoadFile = savestuff.LoadFile
+    library.LoadFileRaw = savestuff.LoadFileRaw
+    library.LoadJSON = savestuff.LoadJSON
+    library.LoadJSONRaw = savestuff.LoadJSONRaw
+    library.SaveFile = savestuff.SaveFile
+    library.GetJSON = savestuff.GetJSON
+end
+
 return library, library_flags, library.subs
