@@ -2861,6 +2861,8 @@ function library:CreateWindow(options, ...)
 						library_flags[flagName] = newval
 						print(newval)
 						if options.Location then
+
+							
 							options.Location[options.LocationFlag or flagName] = newval
 						end
 						colored_toggleInner_BackgroundColor3[3] = (newval and "main") or "topGradient"
