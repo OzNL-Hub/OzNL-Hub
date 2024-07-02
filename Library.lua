@@ -2859,9 +2859,9 @@ function library:CreateWindow(options, ...)
 							end
 						end
 						library_flags[flagName] = newval
+						print(newval)
 						if options.Location then
 							options.Location[options.LocationFlag or flagName] = newval
-							print(newval)
 						end
 						colored_toggleInner_BackgroundColor3[3] = (newval and "main") or "topGradient"
 						colored_toggleInner_BackgroundColor3[4] = (newval and 1.5) or nil
