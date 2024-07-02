@@ -2859,10 +2859,7 @@ function library:CreateWindow(options, ...)
 							end
 						end
 						library_flags[flagName] = newval
-						print(newval)
 						if options.Location then
-
-							
 							options.Location[options.LocationFlag or flagName] = newval
 						end
 						colored_toggleInner_BackgroundColor3[3] = (newval and "main") or "topGradient"
@@ -7480,7 +7477,7 @@ function library:CreateWindow(options, ...)
 		end
 		if options.Credit ~= false then
 			daaata[1 + #daaata] = {"AddLabel", "__Designer.Label.Creator", detailssection, {
-				Text = "By: OzNL"
+				Text = "Library by Pepsi#5229 "
 			}}
 		elseif "Gee, thanks for your support." then
 		end
