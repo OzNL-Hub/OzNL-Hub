@@ -461,7 +461,7 @@ Library v0.36 [
 ]
 ]]
 local library = {
-	Version = "0.67",
+	Version = "0.1",
 	WorkspaceName = "OzNL HUB",
 	flags = {},
 	signals = {},
@@ -2861,6 +2861,7 @@ function library:CreateWindow(options, ...)
 						library_flags[flagName] = newval
 						if options.Location then
 							options.Location[options.LocationFlag or flagName] = newval
+							print(newval)
 						end
 						colored_toggleInner_BackgroundColor3[3] = (newval and "main") or "topGradient"
 						colored_toggleInner_BackgroundColor3[4] = (newval and 1.5) or nil
@@ -7351,7 +7352,7 @@ function library:CreateWindow(options, ...)
 			Flag = "__Designer.Background.WorkspaceProfile",
 			Flags = true,
 			Suffix = "Config",
-			Workspace = library.WorkspaceName or "OzNL Workspace",
+			Workspace = library.WorkspaceName or "Unnamed Workspace",
 			Desginer = true
 		}
 		local daaata = {{"AddTextbox", "__Designer.Textbox.ImageAssetID", backgroundsection, {
@@ -7477,7 +7478,7 @@ function library:CreateWindow(options, ...)
 		end
 		if options.Credit ~= false then
 			daaata[1 + #daaata] = {"AddLabel", "__Designer.Label.Creator", detailssection, {
-				Text = "Library by Pepsi#5229 "
+				Text = "By: OzNL"
 			}}
 		elseif "Gee, thanks for your support." then
 		end
@@ -7682,17 +7683,4 @@ library.NewWindow = library.CreateWindow
 library.AddWindow = library.CreateWindow
 library.Window = library.CreateWindow
 library.W = library.CreateWindow
-
-task.wait(1)
-
-local savestuff = library.elements["__Designer.Background.WorkspaceProfile"]
-if savestuff then
-    library.LoadFile = savestuff.LoadFile
-    library.LoadFileRaw = savestuff.LoadFileRaw
-    library.LoadJSON = savestuff.LoadJSON
-    library.LoadJSONRaw = savestuff.LoadJSONRaw
-    library.SaveFile = savestuff.SaveFile
-    library.GetJSON = savestuff.GetJSON
-end
-
 return library, library_flags, library.subs
