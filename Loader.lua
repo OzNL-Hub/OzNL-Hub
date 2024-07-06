@@ -6,9 +6,9 @@ elseif game.PlaceId == 3978370137 then -- GPO (First Sea)
 
   loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/GPO_FirstSea.lua"))()
 
-elseif game.PlaceId == 11424731604 then -- GPO (Impel Down)
+-- elseif game.PlaceId == 11424731604 then -- GPO (Impel Down)
 
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Impel-Down.lua"))()
+--   loadstring(game:HttpGet("https://raw.githubusercontent.com/OzNL-Hub/OzNL-Hub/main/Impel-Down.lua"))()
 
 elseif game.PlaceId == 4855457388 or game.PlaceId == 5094651510 then -- Demonfall
 
